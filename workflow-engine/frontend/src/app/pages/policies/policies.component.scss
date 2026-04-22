@@ -1,0 +1,81 @@
+.policies-container {
+  min-height: 100vh;
+  background: #0f0e17;
+  color: #fff;
+}
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  h2 { font-size: 1.25rem; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+}
+.topbar-left { display: flex; align-items: center; gap: 1rem; }
+.topbar-right { display: flex; gap: 0.75rem; }
+
+.btn-back {
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px; padding: 0.4rem 0.8rem; color: #fff; cursor: pointer; font-size: 0.85rem;
+  &:hover { background: rgba(255, 255, 255, 0.15); }
+}
+
+.btn-new {
+  background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 8px;
+  padding: 0.5rem 1.25rem; color: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  &:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3); }
+}
+
+.alert { padding: 0.5rem 1rem; text-align: center; font-size: 0.85rem; }
+.alert-success { background: rgba(52, 211, 153, 0.1); color: #6ee7b7; }
+.alert-error { background: rgba(239, 68, 68, 0.1); color: #fca5a5; }
+
+.content { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+.policies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.25rem;
+}
+
+.policy-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px; padding: 1.5rem; cursor: pointer;
+  transition: all 0.2s;
+  &:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+}
+
+.card-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;
+  h3 { font-size: 1.1rem; font-weight: 600; margin: 0; }
+}
+
+.status {
+  font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 5px; font-weight: 700; text-transform: uppercase;
+  &[data-status="DRAFT"] { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+  &[data-status="PUBLISHED"] { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+  &[data-status="ARCHIVED"] { background: rgba(156, 163, 175, 0.15); color: #9ca3af; }
+}
+
+.card-desc { font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); margin: 0.5rem 0; }
+
+.card-stats {
+  display: flex; gap: 1rem; font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); margin: 0.75rem 0;
+}
+
+.card-actions {
+  display: flex; gap: 0.5rem; margin-top: 0.75rem; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 0.75rem;
+
+  button {
+    flex: 1; border: none; border-radius: 6px; padding: 0.4rem; font-size: 0.8rem; cursor: pointer;
+  }
+  .btn-edit { background: rgba(102, 126, 234, 0.15); color: #8b9cf7; &:hover { background: rgba(102, 126, 234, 0.25); } }
+  .btn-pub { background: rgba(52, 211, 153, 0.15); color: #6ee7b7; &:hover { background: rgba(52, 211, 153, 0.25); } }
+  .btn-del { background: rgba(239, 68, 68, 0.15); color: #fca5a5; flex: 0; padding: 0.4rem 0.6rem; &:hover { background: rgba(239, 68, 68, 0.25); } }
+}
+
+.empty-state {
+  grid-column: 1 / -1; text-align: center; padding: 3rem;
+  p { color: rgba(255, 255, 255, 0.4); margin-bottom: 1rem; }
+}

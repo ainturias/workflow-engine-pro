@@ -1,0 +1,171 @@
+.tramites-container { min-height: 100vh; background: #0f0e17; color: #fff; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2rem; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06);
+  h2 { font-size: 1.25rem; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+}
+.topbar-left { display: flex; align-items: center; gap: 1rem; }
+.btn-back {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px; padding: 0.4rem 0.8rem; color: #fff; cursor: pointer; font-size: 0.85rem;
+  &:hover { background: rgba(255,255,255,0.15); }
+}
+
+.alert { padding: 0.5rem 1rem; text-align: center; font-size: 0.85rem; animation: fadeIn 0.3s; }
+.alert-success { background: rgba(52,211,153,0.1); color: #6ee7b7; }
+.alert-error { background: rgba(239,68,68,0.1); color: #fca5a5; }
+
+.content { padding: 1.5rem 2rem; }
+
+.layout { display: flex; gap: 1.5rem; min-height: calc(100vh - 120px); }
+.left-panel { flex: 1; min-width: 0; }
+.detail-panel { width: 420px; min-width: 420px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 1.5rem; overflow-y: auto; max-height: calc(100vh - 120px); }
+
+// Nuevo trámite
+.section-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px; padding: 1.25rem; margin-bottom: 1.25rem;
+  h3 { font-size: 1rem; margin: 0 0 0.75rem; }
+}
+
+.policy-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.policy-btn {
+  background: rgba(102,126,234,0.1); border: 1px solid rgba(102,126,234,0.2);
+  border-radius: 10px; padding: 0.6rem 1rem; color: #fff; cursor: pointer;
+  display: flex; flex-direction: column; text-align: left; transition: all 0.2s;
+  &:hover { background: rgba(102,126,234,0.2); transform: translateY(-1px); }
+  .policy-name { font-weight: 600; font-size: 0.9rem; }
+  .policy-desc { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.15rem; }
+}
+
+// Filtros
+.filters {
+  display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;
+  button {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px; padding: 0.4rem 0.8rem; color: rgba(255,255,255,0.6);
+    font-size: 0.8rem; cursor: pointer;
+    &.active { background: rgba(102,126,234,0.15); border-color: rgba(102,126,234,0.3); color: #8b9cf7; }
+    &:hover:not(.active) { background: rgba(255,255,255,0.08); }
+  }
+}
+
+// Lista trámites
+.tramite-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.tramite-item {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.2s;
+  &:hover { background: rgba(255,255,255,0.07); }
+  &.selected { border-color: #667eea; background: rgba(102,126,234,0.08); }
+}
+
+.tramite-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; }
+.tramite-name { font-weight: 600; font-size: 0.95rem; }
+.tramite-status {
+  font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 5px; font-weight: 700;
+  &[data-status="EN_CURSO"] { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  &[data-status="COMPLETADO"] { background: rgba(52,211,153,0.15); color: #34d399; }
+  &[data-status="CANCELADO"] { background: rgba(239,68,68,0.15); color: #fca5a5; }
+}
+.tramite-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+.tramite-progress { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 0.35rem; }
+
+.empty { text-align: center; color: rgba(255,255,255,0.3); padding: 2rem; font-size: 0.9rem; }
+
+// Detalle
+.detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;
+  h3 { font-size: 1.15rem; margin: 0; }
+}
+.detail-actions { display: flex; gap: 0.5rem; }
+.btn-cancel { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); border-radius: 6px; padding: 0.3rem 0.6rem; color: #fca5a5; font-size: 0.8rem; cursor: pointer; &:hover { background: rgba(239,68,68,0.25); } }
+.btn-close { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 1.1rem; cursor: pointer; &:hover { color: #fff; } }
+
+.detail-info { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+.info-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.25rem 0;
+  span:first-child { color: rgba(255,255,255,0.5); }
+}
+
+// Tareas pendientes
+.pending-section { margin-bottom: 1.25rem;
+  h4 { font-size: 0.9rem; margin: 0 0 0.75rem; }
+}
+
+.task-card {
+  background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 10px; padding: 0.75rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;
+}
+.task-info { display: flex; flex-direction: column; }
+.task-name { font-weight: 600; font-size: 0.9rem; }
+.task-date { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+.btn-complete {
+  background: linear-gradient(135deg, #34d399, #059669); border: none; border-radius: 8px;
+  padding: 0.4rem 0.8rem; color: #fff; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+  &:hover { transform: translateY(-1px); }
+}
+
+// Historial / Timeline
+.history-section { h4 { font-size: 0.9rem; margin: 0 0 0.75rem; } }
+
+.timeline { position: relative; padding-left: 1.5rem;
+  &::before { content: ''; position: absolute; left: 0.55rem; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.08); }
+}
+
+.timeline-item {
+  display: flex; gap: 0.75rem; margin-bottom: 0.75rem; position: relative;
+  .timeline-icon { position: absolute; left: -1.25rem; font-size: 0.85rem; }
+}
+
+.timeline-content { display: flex; flex-direction: column; }
+.timeline-label { font-size: 0.85rem; font-weight: 500; }
+.timeline-meta { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+.timeline-date { font-size: 0.7rem; color: rgba(255,255,255,0.3); }
+
+// Modal
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+  display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+
+.modal-card {
+  background: #1a1a2e; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+  padding: 2rem; width: 100%; max-width: 480px;
+  h3 { margin: 0 0 1.25rem; font-size: 1.1rem; }
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  label { display: block; font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 0.3rem; }
+  textarea, input {
+    width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 0.6rem; color: #fff; font-size: 0.9rem; outline: none; resize: vertical;
+    &:focus { border-color: #667eea; }
+    &::placeholder { color: rgba(255,255,255,0.3); }
+  }
+
+  .hint { font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: -0.2rem; margin-bottom: 0.5rem; }
+
+  .dynamic-fields {
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+
+  .field-row {
+    display: flex; gap: 0.5rem;
+    input { width: 100%; }
+    .btn-remove { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; padding: 0 0.5rem; }
+  }
+
+  .btn-add-field {
+    background: rgba(102,126,234,0.1); border: 1px dashed rgba(102,126,234,0.4);
+    border-radius: 8px; padding: 0.4rem; color: #8b9cf7; font-size: 0.8rem; cursor: pointer; margin-top: 0.25rem;
+    &:hover { background: rgba(102,126,234,0.15); }
+  }
+}
+
+.modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+.btn-secondary { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; font-size: 0.9rem; cursor: pointer; }
+.btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 8px; padding: 0.5rem 1.25rem; color: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer; &:hover { transform: translateY(-1px); } }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

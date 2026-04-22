@@ -1,0 +1,42 @@
+<div class="policies-container">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="btn-back" (click)="goBack()">← Dashboard</button>
+      <h2>Políticas de Negocio</h2>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-new" (click)="createNew()">➕ Nueva Política</button>
+    </div>
+  </header>
+
+  <div class="alert" *ngIf="message" [class.alert-success]="messageType === 'success'" [class.alert-error]="messageType === 'error'">
+    {{ message }}
+  </div>
+
+  <main class="content">
+    <div class="policies-grid">
+      <div class="policy-card" *ngFor="let p of policies" (click)="editPolicy(p.id!)">
+        <div class="card-header">
+          <h3>{{ p.name || 'Sin nombre' }}</h3>
+          <span class="status" [attr.data-status]="p.status">{{ p.status }}</span>
+        </div>
+        <p class="card-desc">{{ p.description || 'Sin descripción' }}</p>
+        <div class="card-stats">
+          <span>📋 {{ p.nodes.length }} nodos</span>
+          <span>🔗 {{ p.transitions.length }} conexiones</span>
+          <span>🏢 {{ p.swimlanes.length }} calles</span>
+        </div>
+        <div class="card-actions" (click)="$event.stopPropagation()">
+          <button class="btn-edit" (click)="editPolicy(p.id!)">✏️ Editar</button>
+          <button class="btn-pub" *ngIf="p.status === 'DRAFT'" (click)="publishPolicy(p.id!)">🚀 Publicar</button>
+          <button class="btn-del" (click)="deletePolicy(p.id!)">🗑️</button>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="policies.length === 0">
+        <p>No hay políticas de negocio creadas aún</p>
+        <button class="btn-new" (click)="createNew()">➕ Crear mi primera política</button>
+      </div>
+    </div>
+  </main>
+</div>

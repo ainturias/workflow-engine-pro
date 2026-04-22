@@ -1,0 +1,255 @@
+<div class="designer-container">
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="btn-back" (click)="goBack()">← Políticas</button>
+      <div class="policy-name">
+        <input type="text" [(ngModel)]="policy.name" placeholder="Nombre de la política" class="name-input" />
+        <span class="status-badge" [attr.data-status]="policy.status">{{ policy.status || 'DRAFT' }}</span>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-save" (click)="savePolicy()">💾 Guardar</button>
+      <button class="btn-publish" (click)="publishPolicy()" *ngIf="policy.status !== 'PUBLISHED'">🚀 Publicar</button>
+    </div>
+  </header>
+
+  <!-- MENSAJE -->
+  <div class="alert" *ngIf="message" [class.alert-success]="messageType === 'success'" [class.alert-error]="messageType === 'error'">
+    {{ message }}
+  </div>
+
+  <!-- CONNECTING INDICATOR -->
+  <div class="connecting-bar" *ngIf="connectingFrom">
+    🔗 Conectando desde <strong>{{ connectingFrom.label }}</strong> — Haz clic en el nodo destino
+    <button (click)="cancelConnection()">✕ Cancelar</button>
+  </div>
+
+  <div class="editor-layout">
+    <!-- PANEL IZQUIERDO: Paleta -->
+    <aside class="toolbox">
+      <h3>Componentes</h3>
+      <div class="tool-section">
+        <div class="tool-item" *ngFor="let nt of nodeTypes" (click)="addNode(nt.type)" [style.borderLeftColor]="nt.color">
+          <span class="tool-icon">{{ nt.icon }}</span>
+          <span>{{ nt.label }}</span>
+        </div>
+      </div>
+
+      <h3>Departamentos (Calles)</h3>
+      <div class="tool-section">
+        <div class="dept-item" *ngFor="let dept of departments" (click)="addSwimlane(dept)">
+          <span>➕ {{ dept.name }}</span>
+        </div>
+        <p class="hint" *ngIf="departments.length === 0">Crea departamentos en Admin primero</p>
+      </div>
+
+      <!-- Swimlanes actuales -->
+      <div *ngIf="policy.swimlanes.length > 0">
+        <h3>Calles Activas</h3>
+        <div class="swimlane-item" *ngFor="let sl of policy.swimlanes">
+          <span class="sl-color" [style.background]="sl.color"></span>
+          <span>{{ sl.departmentName }}</span>
+          <button class="btn-mini-delete" (click)="removeSwimlane(sl.id)">✕</button>
+        </div>
+      </div>
+
+      <div class="tool-section" style="margin-top: 1rem;">
+        <h3>Descripción</h3>
+        <textarea [(ngModel)]="policy.description" placeholder="Descripción de la política..." rows="3"></textarea>
+      </div>
+    </aside>
+
+    <!-- CANVAS CENTRAL -->
+    <div class="canvas-container">
+      <svg #canvas
+           [attr.width]="canvasWidth"
+           [attr.height]="canvasHeight"
+           class="workflow-canvas"
+           (mousemove)="onCanvasMouseMove($event)"
+           (mouseup)="onCanvasMouseUp()"
+           (click)="selectedNode = null; selectedTransition = null; showProperties = false;">
+
+        <!-- Grid de fondo -->
+        <defs>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+          </pattern>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#8b9cf7" />
+          </marker>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- Swimlanes -->
+        <g *ngFor="let sl of policy.swimlanes">
+          <rect
+            [attr.x]="0"
+            [attr.y]="getSwimlaneY(sl)"
+            [attr.width]="canvasWidth"
+            [attr.height]="swimlaneHeight"
+            [attr.fill]="sl.color"
+            fill-opacity="0.04"
+            [attr.stroke]="sl.color"
+            stroke-opacity="0.15"
+            stroke-width="1"
+          />
+          <text
+            [attr.x]="15"
+            [attr.y]="getSwimlaneY(sl) + 25"
+            [attr.fill]="sl.color"
+            font-size="13"
+            font-weight="600"
+            opacity="0.7"
+          >🏢 {{ sl.departmentName }}</text>
+        </g>
+
+        <!-- Transiciones (flechas) -->
+        <g *ngFor="let tr of policy.transitions">
+          <path
+            [attr.d]="getTransitionPath(tr)"
+            fill="none"
+            stroke="#8b9cf7"
+            stroke-width="2"
+            stroke-opacity="0.6"
+            marker-end="url(#arrowhead)"
+            class="transition-path"
+            [class.selected]="selectedTransition?.id === tr.id"
+            (click)="selectTransition(tr); $event.stopPropagation()"
+          />
+          <text
+            *ngIf="tr.label"
+            [attr.x]="getTransitionMidPoint(tr).x"
+            [attr.y]="getTransitionMidPoint(tr).y"
+            fill="#c4b5fd"
+            font-size="11"
+            text-anchor="middle"
+            class="transition-label"
+            (click)="selectTransition(tr); $event.stopPropagation()"
+          >{{ tr.label }}</text>
+        </g>
+
+        <!-- Nodos -->
+        <g *ngFor="let node of policy.nodes" class="node-group"
+           [class.selected]="selectedNode?.id === node.id"
+           [class.connecting-target]="connectingFrom && connectingFrom.id !== node.id"
+           (mousedown)="onNodeMouseDown($event, node)"
+           (click)="$event.stopPropagation()"> <!-- Evita que el clic llegue al fondo -->
+
+          <!-- START / END: Círculo -->
+          <ng-container *ngIf="node.type === 'START' || node.type === 'END'">
+            <circle
+              [attr.cx]="node.x"
+              [attr.cy]="node.y"
+              r="25"
+              [attr.fill]="getNodeColor(node.type)"
+              fill-opacity="0.2"
+              [attr.stroke]="getNodeColor(node.type)"
+              stroke-width="2"
+            />
+            <text [attr.x]="node.x" [attr.y]="node.y + 5" fill="#fff" font-size="12" text-anchor="middle" font-weight="600">
+              {{ node.label }}
+            </text>
+          </ng-container>
+
+          <!-- DECISION: Rombo -->
+          <ng-container *ngIf="node.type === 'DECISION'">
+            <polygon
+              [attr.points]="(node.x) + ',' + (node.y - 30) + ' ' + (node.x + 40) + ',' + (node.y) + ' ' + (node.x) + ',' + (node.y + 30) + ' ' + (node.x - 40) + ',' + (node.y)"
+              [attr.fill]="getNodeColor(node.type)"
+              fill-opacity="0.2"
+              [attr.stroke]="getNodeColor(node.type)"
+              stroke-width="2"
+            />
+            <text [attr.x]="node.x" [attr.y]="node.y + 4" fill="#fff" font-size="11" text-anchor="middle" font-weight="500">
+              {{ node.label }}
+            </text>
+          </ng-container>
+
+          <!-- FORK / JOIN: Barra -->
+          <ng-container *ngIf="node.type === 'FORK' || node.type === 'JOIN'">
+            <rect
+              [attr.x]="node.x - 30"
+              [attr.y]="node.y - 8"
+              width="60"
+              height="16"
+              rx="3"
+              [attr.fill]="getNodeColor(node.type)"
+              fill-opacity="0.6"
+              [attr.stroke]="getNodeColor(node.type)"
+              stroke-width="1"
+            />
+            <text [attr.x]="node.x" [attr.y]="node.y + 4" fill="#fff" font-size="10" text-anchor="middle" font-weight="600">
+              {{ node.label }}
+            </text>
+          </ng-container>
+
+          <!-- ACTIVITY: Rectángulo redondeado -->
+          <ng-container *ngIf="node.type === 'ACTIVITY'">
+            <rect
+              [attr.x]="node.x - 60"
+              [attr.y]="node.y - 25"
+              width="120"
+              height="50"
+              rx="10"
+              [attr.fill]="getNodeColor(node.type)"
+              fill-opacity="0.15"
+              [attr.stroke]="getNodeColor(node.type)"
+              stroke-width="2"
+            />
+            <text [attr.x]="node.x" [attr.y]="node.y + 5" fill="#fff" font-size="12" text-anchor="middle" font-weight="500">
+              {{ node.label }}
+            </text>
+          </ng-container>
+        </g>
+      </svg>
+    </div>
+
+    <!-- PANEL DERECHO: Propiedades -->
+    <aside class="properties" *ngIf="showProperties">
+      <!-- Propiedades de Nodo -->
+      <div *ngIf="selectedNode">
+        <h3>Propiedades del Nodo</h3>
+        <div class="prop-group">
+          <label>Etiqueta</label>
+          <input type="text" [(ngModel)]="selectedNode.label" />
+        </div>
+        <div class="prop-group">
+          <label>Tipo</label>
+          <span class="type-badge" [style.color]="getNodeColor(selectedNode.type)">{{ selectedNode.type }}</span>
+        </div>
+        <div class="prop-group">
+          <label>Departamento</label>
+          <select [(ngModel)]="selectedNode.departmentId">
+            <option *ngFor="let sl of policy.swimlanes" [value]="sl.departmentId">{{ sl.departmentName }}</option>
+          </select>
+        </div>
+        <div class="prop-group" *ngIf="selectedNode.type !== 'START' && selectedNode.type !== 'END'">
+          <label>Calle actual</label>
+          <span class="info-text">{{ getSwimlaneNameForNode(selectedNode) }}</span>
+        </div>
+
+        <div class="prop-actions">
+          <button class="btn-connect" (click)="startConnection(selectedNode)">🔗 Conectar</button>
+          <button class="btn-delete-node" (click)="deleteNode(selectedNode.id)">🗑️ Eliminar</button>
+        </div>
+      </div>
+
+      <!-- Propiedades de Transición -->
+      <div *ngIf="selectedTransition">
+        <h3>Propiedades de Conexión</h3>
+        <div class="prop-group">
+          <label>Etiqueta</label>
+          <input type="text" [(ngModel)]="editingTransitionLabel" (blur)="updateTransition()" placeholder="Ej: Aprobado" />
+        </div>
+        <div class="prop-group">
+          <label>Condición</label>
+          <input type="text" [(ngModel)]="editingTransitionCondition" (blur)="updateTransition()" placeholder="Ej: monto > 1000" />
+        </div>
+        <div class="prop-actions">
+          <button class="btn-delete-node" (click)="deleteTransition(selectedTransition.id)">🗑️ Eliminar Conexión</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+(Transcrito por TurboScribe. Actualizar a Ilimitado para eliminar este mensaje.)
+
+Vamos a hacer caso al público. Vamos a agregar lo siguiente. Primero, la edición del diagrama debe ser en modo natural, normal, digamos.
+
+Yo tengo mi editor, donde empiezo a diseñar. Debería ser colaborativo, es decir, lo podría hacer con varias personas. Entre varias personas que están en diferentes lugares podemos ir diseñando el diagrama de actividades que al final tengan una política de negocio.
+
+Pero la novedad ahí es que hay una interacción entre ellos. Es decir, yo lo voy a escribir como sea texto o sea audio. Le voy a dar la idea a la herramienta y ella va a ir haciéndolo.
+
+Por ejemplo, yo puedo decir, crea una actividad que me muestra acá, colocada dentro del departamento. Ahora, conecta la actividad A con la actividad B, utilizando una notación lineal o condicional. Y debería ser.
+
+Yo podría introducir el texto de dos maneras. Uno, dibujarlo directamente como lo hacemos con el texto de la arquitectura. O dos, mediante prompts.
+
+Y esos prompts pueden ser texto o pueden ser... De esa forma yo voy a ir construyendo. No es que la herramienta me va a generar el diagrama. Yo voy a ir diseñando el diagrama.
+
+Pero en vez de utilizar los clásicos botones o componentes, mediante prompts. Otra novedad interesante es que cuando... Hemos quedado, por ejemplo, que cuando la política luego se viene acá, después acá y después acá y varios procesos. Cada uno tiene que hacer su trabajo.
+
+Entonces la herramienta tiene que poder construir un formulario para que sea seguramente llenado, cargado, con un informe de cada uno, de cada funcionario, cuando realice su trabajo. El funcionario debería poder cargar la información a ese formulario, ya sea mediante un informe, digamos, textual. La aplicación lo que debería hacer es reconocer lo que él habló y lo llena el formulario.
+
+Y lo otro es manual. Y el tercero, tiene que ver con encontrar juegos de búsqueda. Mediante análisis técnico y manual.
+
+Pero también debe encontrar juegos de búsqueda en la atención del cliente en una determinada política de negocio. Pero eso lo van a hacer con el tiempo. Entonces, eso es obligatorio.
+
+Ahora, la idea que él puso, cada quien también la puede interesar. Si de repente la idea ya la que estoy comentando ya no tiene nada que hacer. Pero los que de repente quieren crear una nota mucho más alta, no cuentan si no tienen lo mínimo.
+
+No sé si me entiendo. O sea, para que cuenten la idea que ustedes han implementado, esto que es lo mínimo lo deben tener. ¿Se entiende? Bien.
+
+¿Deberíamos ser capaces de generar métricas para hacer eso? Exactamente. Ustedes son dueños y señores de definir los criterios, las métricas, los cartelinos, etc. ¿Alguna pregunta más por ahí? O sea, pueden ser una gran cantidad de funcionales.
+
+Pero a nivel de roles, habría el administrador, que pueden ser uno o varios también. Ni siquiera el administrador. Son gente que crean políticas de negocio.
+
+Podrían llamarse administradores. Pero no es el admin de la aplicación. Es un tipo que tiene la capacidad de crear las políticas de negocio.
+
+Hay otro conjunto de empleados funcionarios que simplemente son funcionarios que atienden la política de negocio. Ahora, obviamente, se supone también que en esta aplicación, como esperaba, voy a ser 100% colaborativa en el tema del diseño de las políticas de negocio. Y, no sé, ¿hay algo más que tengan que preguntar? Nada más.
+
+Sí, por acá podemos escuchar. Sí, hoy es 31 de marzo. 28, van a tener 28, o sea, en cuatro semanas exactamente.
+
+¿Tienen alguna pregunta más? ¿Tiene que haber una política mínima? ¿Una cinco o mínima? Ya les dije hace rato que no tenemos ninguna idea. Ustedes van a simplemente diseñar la realidad. Si les sale, vamos a abrir y vamos a crear.
+
+Si creen en la política de negocio, creen en la otra, etcétera, etcétera. Ese día, me imagino que van a venir, no creo que vengan con varias máquinas, porque la única forma que hay que fusionar es que haya cosas que se vengan con varias máquinas. Una opción es que se vengan con varias máquinas.
+
+La otra opción es que usted crea una especie de emulador en su misma máquina. Lo más sencillo es tener más de un navegador, y en cada navegador está un funcionario distinto. Sin hacer ningún clic, automáticamente se tiene que ver el progreso.
+
+¿Quién más? Bueno, de todas maneras, el día jueves, los primeros minutos, nosotros nos dedicamos a hablar un poco más de la construcción. ¿Ya está lleno? Ya está lleno. ¡Gracias!
+
+(Transcrito por TurboScribe. Actualizar a Ilimitado para eliminar este mensaje.)

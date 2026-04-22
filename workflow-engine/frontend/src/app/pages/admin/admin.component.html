@@ -1,0 +1,152 @@
+<div class="admin-container">
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="btn-back" (click)="goToDashboard()">← Dashboard</button>
+      <h2>Panel de Administración</h2>
+    </div>
+    <div class="topbar-right">
+      <span class="user-badge">{{ currentUser?.firstName }} (Admin)</span>
+      <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <nav class="tabs">
+    <button [class.active]="activeTab === 'departments'" (click)="setTab('departments')">🏢 Departamentos</button>
+    <button [class.active]="activeTab === 'activities'" (click)="setTab('activities')">⚡ Actividades</button>
+    <button [class.active]="activeTab === 'users'" (click)="setTab('users')">👥 Usuarios</button>
+  </nav>
+
+  <!-- MENSAJE -->
+  <div class="alert" *ngIf="message" [class.alert-success]="messageType === 'success'" [class.alert-error]="messageType === 'error'">
+    {{ message }}
+  </div>
+
+  <main class="admin-content">
+
+    <!-- ========== DEPARTAMENTOS ========== -->
+    <section *ngIf="activeTab === 'departments'">
+      <div class="form-card">
+        <h3>{{ editingDeptId ? '✏️ Editar' : '➕ Nuevo' }} Departamento</h3>
+        <div class="form-inline">
+          <input type="text" [(ngModel)]="newDepartment.name" placeholder="Nombre del departamento" />
+          <input type="text" [(ngModel)]="newDepartment.description" placeholder="Descripción" />
+          <button class="btn-primary" (click)="editingDeptId ? updateDepartment() : createDepartment()">
+            {{ editingDeptId ? 'Actualizar' : 'Crear' }}
+          </button>
+          <button class="btn-secondary" *ngIf="editingDeptId" (click)="cancelEditDept()">Cancelar</button>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dept of departments">
+              <td>{{ dept.name }}</td>
+              <td>{{ dept.description }}</td>
+              <td class="actions">
+                <button class="btn-edit" (click)="startEditDept(dept)">✏️</button>
+                <button class="btn-delete" (click)="deleteDepartment(dept.id!)">🗑️</button>
+              </td>
+            </tr>
+            <tr *ngIf="departments.length === 0">
+              <td colspan="3" class="empty">No hay departamentos creados aún</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========== ACTIVIDADES ========== -->
+    <section *ngIf="activeTab === 'activities'">
+      <div class="form-card">
+        <h3>{{ editingActId ? '✏️ Editar' : '➕ Nueva' }} Actividad</h3>
+        <div class="form-inline">
+          <input type="text" [(ngModel)]="newActivity.name" placeholder="Nombre de la actividad" />
+          <input type="text" [(ngModel)]="newActivity.description" placeholder="Descripción" />
+          <select [(ngModel)]="newActivity.departmentId">
+            <option value="" disabled>Seleccionar departamento</option>
+            <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+          </select>
+          <button class="btn-primary" (click)="editingActId ? updateActivity() : createActivity()">
+            {{ editingActId ? 'Actualizar' : 'Crear' }}
+          </button>
+          <button class="btn-secondary" *ngIf="editingActId" (click)="cancelEditAct()">Cancelar</button>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Departamento</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let act of activities">
+              <td>{{ act.name }}</td>
+              <td>{{ act.description }}</td>
+              <td><span class="badge">{{ getDeptName(act.departmentId) }}</span></td>
+              <td class="actions">
+                <button class="btn-edit" (click)="startEditAct(act)">✏️</button>
+                <button class="btn-delete" (click)="deleteActivity(act.id!)">🗑️</button>
+              </td>
+            </tr>
+            <tr *ngIf="activities.length === 0">
+              <td colspan="4" class="empty">No hay actividades creadas aún</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========== USUARIOS ========== -->
+    <section *ngIf="activeTab === 'users'">
+      <div class="table-card">
+        <h3>👥 Usuarios Registrados</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Departamento</th>
+              <th>Asignar Depto.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.firstName }} {{ user.lastName }}</td>
+              <td>{{ user.email }}</td>
+              <td><span class="role-badge" [attr.data-role]="user.role">{{ user.role }}</span></td>
+              <td>{{ getDeptName(user.departmentId || '') }}</td>
+              <td>
+                <select (change)="assignDepartment(user.id, $any($event.target).value)">
+                  <option value="" disabled selected>Seleccionar...</option>
+                  <option *ngFor="let dept of departments" [value]="dept.id" [selected]="dept.id === user.departmentId">
+                    {{ dept.name }}
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr *ngIf="users.length === 0">
+              <td colspan="5" class="empty">No hay usuarios registrados</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>

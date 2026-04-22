@@ -1,0 +1,93 @@
+______________
+PRIMER EXAMEN PARCIAL
+1. Contexto del Problema
+Se requiere diseñar un sistema orientado a la gestión de trámites, inspirado en un caso similar al de CRE.
+En este contexto:
+•	Un usuario puede solicitar diferentes tipos de trámites.
+•	El área de atención al cliente recibe la solicitud.
+•	Posteriormente, el trámite es derivado a distintos departamentos (técnico, legal, etc.) para evaluar su viabilidad.
+•	El proceso continúa a través de varias áreas hasta su finalización.
+Este comportamiento es similar a un workflow (flujo de trabajo).
+______________
+2. Objetivo del Sistema
+El sistema debe:
+•	Gestionar trámites de principio a fin.
+•	Modelar y ejecutar flujos de trabajo.
+•	Permitir identificar:
+o	Cuellos de botella
+o	Tiempos de atención
+o	Estados de los trámites
+o	Participación de los distintos departamentos
+______________
+3. Requisitos Generales
+Se conoce únicamente que el sistema será utilizado para trámites, por lo que debe ser flexible y adaptable.
+Requisitos clave:
+1.	Soportar múltiples políticas de negocio.
+2.	Cada política puede ser diferente y personalizada.
+3.	No se tienen definidos previamente los flujos ni reglas.
+______________
+4. Tipos de Procesos a Soportar
+El sistema debe permitir los siguientes tipos de flujo:
+•	Proceso lineal o secuencial
+Actividades ejecutadas en orden.
+•	Proceso alternativo o condicional
+Dependiendo de una condición, el flujo cambia.
+•	Proceso iterativo (ida y vuelta)
+Posibilidad de regresar a pasos anteriores.
+•	Proceso en paralelo
+Actividades ejecutadas simultáneamente (con separación y unión de flujos).
+______________
+5. Motor de Procesos
+El sistema contará con un motor de workflow, basado en:
+•	Diagramas de actividades organizados en calles (swimlanes).
+•	Representación visual de los procesos para facilitar la creación de políticas de negocio.
+Elementos del motor:
+•	Actividades
+•	Flujos
+•	Estados
+•	Transiciones
+______________
+6. Gestión de Configuración
+El sistema debe permitir:
+•	Registrar:
+o	Empresas
+o	Actividades
+o	Departamentos
+•	Asociar estos elementos dentro de los flujos.
+Roles:
+•	Funcionario normal:
+o	No puede crear actividades ni modificar flujos.
+o	Solo ejecuta trámites.
+•	Administrador:
+o	Puede crear y configurar actividades.
+o	Define políticas de negocio.
+o	Diseña los flujos.
+______________
+7. Ejecución del Proceso
+•	Cuando un funcionario recibe una solicitud:
+o	Selecciona la política de negocio correspondiente.
+o	El trámite sigue el flujo definido automáticamente.
+______________
+8. Funcionalidades del Sistema
+Automatización
+•	El sistema debe actualizar estados automáticamente.
+•	Debe gestionar el avance del trámite sin intervención manual excesiva.
+Notificaciones
+•	Enviar notificaciones a los usuarios involucrados en cada etapa.
+Monitoreo
+•	Medir tiempos de atención.
+•	Detectar cuellos de botella automáticamente.
+______________
+9. Funcionalidades Adicionales (mínimo requerido)
+•	Sistema colaborativo entre funcionarios.
+•	Creación de flujos mediante:
+o	Dibujos (diagramas)
+o	Prompts (texto o imágenes)
+•	Formularios de reporte:
+o	Cada funcionario debe registrar un informe al completar su actividad.
+•	Análisis de procesos:
+o	Identificación de cuellos de botella en las políticas mediante análisis de datos.
+______________
+10. Fecha de Presentación
+28 de abril
+______________

@@ -1,0 +1,59 @@
+<div class="dashboard-container">
+  <header class="topbar">
+    <div class="topbar-left">
+      <h2>Workflow Engine</h2>
+    </div>
+    <div class="topbar-right" *ngIf="user">
+      <div class="user-info">
+        <div class="user-avatar">{{ user.firstName[0] }}{{ user.lastName[0] }}</div>
+        <div class="user-details">
+          <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+          <span class="user-role">{{ getRoleLabel(user.role) }}</span>
+        </div>
+      </div>
+      <button class="btn-policies" (click)="goToPolicies()">📋 Políticas</button>
+      <button class="btn-tramites" (click)="goToTramites()">📂 Trámites</button>
+      <button class="btn-admin" *ngIf="isAdmin()" (click)="goToAdmin()">⚙️ Admin</button>
+      <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <main class="dashboard-content">
+    <div class="welcome-card">
+      <h1>¡Bienvenido, {{ user?.firstName }}! 👋</h1>
+      <p>Has iniciado sesión como <strong>{{ getRoleLabel(user?.role || '') }}</strong></p>
+      <p class="info-text">El sistema de gestión de trámites está listo. Los módulos se irán habilitando en los siguientes bloques de desarrollo.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">📋</div>
+        <div class="stat-info">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Trámites Activos</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">⚡</div>
+        <div class="stat-info">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Tareas Pendientes</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">✅</div>
+        <div class="stat-info">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Completados</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">📊</div>
+        <div class="stat-info">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Políticas de Negocio</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

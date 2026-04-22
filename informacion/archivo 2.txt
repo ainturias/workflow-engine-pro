@@ -1,0 +1,44 @@
+STACK TECNOLOGICO 
+el core la parte central del back debe estar en sprint boot aquellos microservicos debemos implementar en fastApi para lo q es la IA , base de datos MongoDB,en el front web Angular , móvil flutter , móvil para el cleinte final par anotofaicones push etc , todo desplegado ya sea en aws Google cloud o azure , la app móvil solo generar apk , pa gestión de proyectos algo como gira trello etc github git , deben utilizar docker 
+
+DOCUMENTACION 
+proceso unificado osea PUDS por rumbao , venir con el libro digital impreso,  se abre cuqlueir página no sabemos no hay nada q preguntar,  lenguaje pa los modelos UML 2.5 o superior,igual ese día traer el libro de uml esctiro por los 3 autores escrito por boch rumbao, herramientas CASE obligatorios para los modelos , modelos elaborados usando herramientas case,  architec obviamente,  si alguno no cumple con la notación uml 2.5 no sirve 
+
+DOCUMENTACION PARTES
+Pdf que debemos subir a la plataforma modle máximo ese día hasta las 8am , 29 de este mes, traer 2 caratulas y el pdf traerlo en la computadora,  
+
+Debe tener las siguientes partes:
+1.Caratula
+2.Indice o tabla de contenido 100% navegable 
+1RA PARTE DEL DOC
+3. FUNDAMENTACION TEORICA o marco teórico pero en este caso lo llamaremos así quiere decir q roxo esta fundamentado por esto
+Tiene el propósito de q en esta parte colocaremos todos aquellos temas q seguro profundizamos o especializado para realizar este proyecto 
+, un capítulo será de ingeniería de software asistida por computadora en el cual obviamente hablaremos , hablar sobre el punto q hablamos en anterior clase , el propósito central de la ing de software q tiene q ver con la productividad ,
+Desarrollo de software basado en componentes , igual ya se hablo de este tema en anterior clases , el propósito es q el desarrollo sea algo similar al harwarod define ariqietcrurwa etc y que todo sea igual si se hace algún cambio y eso no afecte a todo lo demás,  eso de debe aplicar al desarrollo del proyecto,  de usará de 2 maneras , usando componentes hechos , lo 2do es cualquier cosa q implementamos debe ser reutilizable mejor si esta en un nivel de componente,  y todo eso debe tener un estándar y todo eso está en el libro desarrolo de software basado en componentes , otro tema inevitable es la arquitectura del software,  es otro de los temas q debe aparecer reflejados plenamente
+Metodología proceso unificado , colocar un resumen muy puntual ,uml , la IA, en este punto de la IA quiero q seamos críticos en escribir acerca de , escribir la manera de conveniente apropiada de como deveria ocupar la IA un programador,  ventajas beneficios desventajas , todo un capítulo y ojalá sea nuestra autoria ,  otro capítulo Workflow , los sistemas Workflows,  se puede usar uno hecho 
+Herramientas de software,  hacer una comparativa por ejemplo sprint boot comparado con laravel , mongoDB contra otra , osea hacer comparaciones entre una y otra con cada una de las herramientas q nos tocó 
+
+2DA PARTE
+Proceso de desarrollo
+Hablar del proceso de desarrollo de boch rumbao etc , uml 2.5 o superior,  no se necesita hacer todos los diagramas solo los q sean útiles dependiendo al contexto , hay 4 q si o si haremos inevitables q no debemos dejar de hacer , aunque ene l libro diga no hacer , un modelo q nos muestre la arquitectura una del software,  que nos visualice , por lo menos dos q nivel de código uno de paquetes , y a físicos uno de despliegue,  dnd se ve nodos y el software ya notación del cubo
+, otro será el modelo de datos , algún modelo q nos permita diseñar la base de datos , ver la pertinencia de usar por ejemplo usar el modelo clásico para modelar base de datos relacional,  otro modelo será el de lógica,  un diagrama dinamico seria el de secuencia estado tiempo etc , en nuestro caso lo más recomendado es el de secuencia y estado para complementar,  y finalmente un diagrama de contexto , normalmente es un modelo de alto nivel muy abstracto z mirando una página ve todo el sistema tendría q ver por lo menos las funcionales del software,  los actores y otras entidades externas q también interacturan con el software,  el diagrama de casos de uso
+
+3RA PARTE 
+QUien sea q use su software debe aprenderlo a utilizar con el menor esfuerzo posible  lo más arcaico y tradicional es usar un manual de usuario , lo otro es hacer videos de como utilizarlo , lo más adecuado es usar un agente,  sirven videos cortos,  un agente que nos diga como funciona, el pdf del acrobe es un ejemplo , más q un boot que igual se puede, algo q se de cuenta de q esta haciendo el usuario en todo momento , podríamos usar quizá n8n para este caso quizá sea más sencillo , esto debe ser atraves de conversaciones normamals quizá 
+
+
+
+ESE DIA SE HABLARA de por ejemplo 
+El software q trajo es de calidad ? Diremos q si para empezar q es calidad ? Hablar eso lo mismo en productividad etc, demostrar q el software es un producto y cumple con todos las definiciones q hemos acordado , 3cer paso si pasan eso si no pasamos eso se cae el examen,  en el 3ro demostramos q el proyecto esta desarrollado por ing de software y q la IA es solo una herramienta nada más,  la 1ra haber cumplido el proceso de desarrollo tal cual esta en el documento ,sincronizaicon entre ing de software y lo q hemos hecho
+4to paso 
+Aquí lo que haremos es asegurarse q lo q trajimos esta hecho por nosotros , como podemos asegurarnos de eso ?modificar cosas agregar cosas etc , todo deb ser en la nube , pero si consideramos q tardará mucho para q ver los cambios en producción , traer lo local para visualizar los cambios , nos iremos ese día con la nota 
+
+
+
+
+20 minutos
+Diagrama de actividad basado en calles en UML 
+
+
+En cada nodo el software debe poder permitir crear un formulario 
+Cada funcionario carga sus datos , una agarra y vía audio rellena el formulario ,luego el si quiere modifca la info etc

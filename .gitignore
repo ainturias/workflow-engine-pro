@@ -1,0 +1,42 @@
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+.mvn/wrapper/maven-wrapper.jar
+.metadata/
+.project
+.settings/
+.classpath
+.factorypath
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python / AI Service
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+.pytest_cache/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*.DS_Store
+
+# Logs
+logs/
+*.log

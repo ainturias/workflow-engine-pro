@@ -1,0 +1,123 @@
+(Transcrito por TurboScribe. Actualizar a Ilimitado para eliminar este mensaje.)
+
+Bueno, el ámbito de la aplicación está dentro de un contexto en el cual existe lo que se denomina política de negocio, para las cuales, primeramente, existe, por ejemplo, una necesidad como esta, imagínense, una empresa que trabaja, digamos, de cocas, ¿Con qué conta yo no siento, que siento todavía? Donde un usuario, por lo general, después de solicitar distintos trámites, pongamos un ejemplo real, que es la credita. Alguna vez, imagínense, que hay alguien que construye su casa y necesita que le traemos dinero. Entonces, seguramente, como etapa inicial, de razoncitar la interacción, pues, ¿no? Es probable que el departamento de atención al cliente sea el que estable o inicie, digamos, este trámite, que es todo un trámite que hace.
+
+Y, seguramente, seguramente le habrá pedido que presente un conjunto de requisitos. Luego, esos requisitos, dependiendo de cómo es la política de negocio, para solicitar un trámite de interacción de dinero, es probable que, personalmente, lo deriven, no sé a dónde, pero lo van a llevar a algún departamento. Por ejemplo, podría ser un departamento técnico para bailar la guía militar.
+
+Y tal, porque realmente, seguramente hay demasiadas obras por ahí, o no hay espacios. Una vez pasa eso, de repente, luego, ese proceso va a otra área, a una área legal, donde también revisan, digamos, los aspectos legales, que seguramente tienen un poco de poder. Y de ahí, seguramente, pasa otra, casi que sea una política de negocio.
+
+Y, dependiendo de ciertas condiciones, seguramente va a ir a un lado, o va a ir a otro. Hay temas que actualmente, cuando, por ejemplo, el cliente llama, se va a contactar con la atención del cliente, y le va a preguntar, ¿cómo va mi trámite? Le va a empezar el departamento, por ejemplo, de atención del cliente. No tiene, quizás, a la mano la información, como para decirle, ¿está en trámite, está en lugar, está detado? O, a la vida está detado.
+
+Bueno, una manera de resolver esa situación, ¿qué podemos utilizar? Supongamos que queremos utilizar algún tipo de herramienta, que facilite este tipo de pregunta, y el cliente llama, quiere saber dónde está su trámite, o en qué tabla está. Y la persona que atiende a llamar, va a sentirla y sabe con precisión todo lo que ya recorrió, cuántos trámites, dónde está, qué es lo que le falta a otro todavía, para que dicho trámite se pueda cumplir. Y, obviamente, tiene que tener acceso a todos los trámites.
+
+¿Qué haríamos para resolver ese problema? ¿Qué haríamos? No se nos ocurra nada. Obviamente, haríamos un software, está bien, pero... ¿Qué categoría, qué tipo de software? ¿Qué haríamos? Bueno, estaríamos ante la presencia de la necesidad de algo muy similar a un board flow. ¿Es cierto? ¿Qué es un board flow, exactamente? Lo que queramos decir.
+
+Normalmente, este tipo de aplicaciones son utilizadas justamente con ese propósito. Que nos van a permitir hacer seguimiento a los distintos trámites que pueda darse en cualquier organismo. ¿Qué tiene que ocurrir más o menos? Por ejemplo, estando en este departamento, él hará lo que tiene que hacer, y dará por terminado su trabajo, el sistema lo que tiene que hacer en la luta directamente al departamento donde corresponde, seguro, la política de negocio, y acá y allá, y allá y allá, y así sucesivamente conforme se le quede la política.
+
+Cada usuario obviamente va a tener un punto donde le va a llegar seguramente las actividades que tiene que hacer. Tendrán una especie de... un panel en el cual verán, o sea, actividades atendidas, pendientes, en proceso. Son distintos resultados.
+
+El sistema debe identificar puestos de botella, tiempos de atención, cuánto dura un panel, dónde tiene que estar. Pero lo bueno de... no sé si es bueno o malo, pero pongámoslo más bonito. Lo desafiante de esta situación es que no tenemos ni la más peregrina idea de quién o para qué lo vamos a ver.
+
+¿Sabe o qué lo vamos a pasar? Nada. No tenemos ni idea de cuánto tanto, cuánta política de negocio, ni cuál es el flujo que sigue la política de negocio, ni cuántos departamentos tienen que pasar, no tenemos ni idea. Menos qué tiene que hacer cada una de las... Es como diseñar un gráfico.
+
+Una red. Donde cada nodo es un departamento. O una persona, o un empleado.
+
+La secuencia a seguir, o sea, el flujo que debería seguir, digamos. Podría tener por lo menos cuatro posibles. Podría haber procesos que sean exclusivamente uno de estos cuatro, o la combinación de estos cuatro en una sola política de negocio.
+
+El sistema debe soportar muchas políticas de negocio y cada política de negocio es muy particular en su flujo. Primero, puede ser un proceso totalmente lineal. Secuenciar primero acá, después acá, después acá, después acá.
+
+Otra alternativa, ¿cuál sería? Que haya un proceso de tipo alternativo. Un condicional, viene acá, después acá. Y aquí existe algún tipo de valoración, análisis.
+
+Y dependiendo de lo que se valorezca, cumple una codicia y mira allá, o si no, acá. O si no, por allá. ¿Es cierto? Ah, eso es un flujo, claro.
+
+Y tercero, ¿cuál sería? Viene acá, viene acá, viene acá. Y por alguna razón, repite acá, repite acá, repite acá, repite acá, repite acá. Voy a reposar sus píteras.
+
+Hasta ahí están las tres estructuras de control clásica de programación cuando empezaron, no sé, jóvenes todavía. O usados en programación, digamos. ¿Cuánta una? ¿Cuál sería la cuarta? Aparte de la secuenciar, aparte de la alternativa, aparte de la iterativa, ¿cuál falta? ¿Cuál? ¿Cómo? ¿En qué ha quedado su curso de programación? Secuenciar.
+
+Otra es alternativa, que puede ser alternativa binaria o múltiple. Puede ser cualquiera de esas. Puede ser O, Binario, Swift o... La otra es iterativa.
+
+Puede ser algo como un Dubai, o un... o uno, no sé. Pero sigue siendo iterativa. ¿Cuánta una más? ¿Cuál sería? ¿Cuánta una más? Procesos que se ejecutan en paralelo.
+
+Vienen acá, se hace este, este y este simultáneamente. Y cierran. Entonces.
+
+Las políticas de negocio. Secuenciar. Dónde puede andarse una letra o la combinación de estas estructuras de control para cada política de negocio.
+
+Van a tener que tener un motor. El motor es el que va a hacer que el... Que el flujo vaya progresando según se vaya... haya sido planeado. Ahora, dentro de esto.
+
+Me imagino que hacen una cuenta que se parece o que queremos hacer bastante a uno de los muy conocidos programas de BN. ¿A cuál diagrama? Hay un diagrama que básicamente es esto. ¿Cuál? ¿Uno? ¿El de clases? No sirve pues, ¿no? No hay forma especial.
+
+¿Cuál es lo? Secuencia. El medio, por cierto. ¿Caso de uso, entonces? ¿Creados? ¿No ponéselos en los diagramas de BN? ¿Conocen? ¿De todos los diagramas de BN que ustedes conocen cuál es el que ustedes utilizan para modelar políticas de negocio? ¿Cuál? El diagrama de actividades.
+
+Pero, con su apellido. Diagrama de actividades organizados en gafas. Este diagrama seguramente va a ser nuestra referencia para tener una idea de cómo es que tenemos que facilitar el diseño de las políticas de negocio.
+
+¿Qué le voy a entregar al usuario? Le voy a entregar al usuario una herramienta en la cual él pueda diseñar políticas de negocio. Y la forma de diseñar políticas de negocio tiene que ser visual. Y algo, lo más parecido que tenemos a algo visual como todos lo vamos a entender es justamente este diagrama de actividades organizadas en gafas.
+
+¿No lo sabía? Claro, ¿eh? Una cosa que puedo presentarmelo un diagrama de actividades organizadas en gafas y le voy a mostrar. Yo todavía veo una agregación dentro de ese significado, ¿no es cierto? Mirá mi cara. Esa es la expresión básica.
+
+Alguien lo tiene por ahí. Bueno, me imagino que se van a sumar a su memoria unidas las actividades organizadas en gafas y díganme quién quiere. ¿Qué partes les llama la atención y le llama la atención a las actividades organizadas en gafas? Lleve.
+
+Por lo menos deberían ver tres aspectos. Mínimamente claros. Primero, vemos las actividades, tareas, ¿no es cierto? Está clarito.
+
+Segundo, ¿qué es lo que miramos? Los responsables de esas actividades. En este caso, puede ser un empleado o un empleado de la empresa. Y tercero, ¿qué ves? El grupo.
+
+Qué se hace primero, qué se hace después, lo mismo por acá, por allá, etc. Y ese grupo tiene cuatro posibles variaciones, mirá cómo están más cerradas. Puede ser un grupo secuencial, puede ser un grupo alternativo o podría ser un grupo en paralelo.
+
+Y cuando es en paralelo tiene dos barras. Una barra de edición, cuando se divide un grupo en varios procesos. Y uno de unir.
+
+¿Cierto? Bien. Ahora, ¿qué va a ocurrir? Imagínense que hacemos lo siguiente. Al usuario le vamos a entregar un diseñador de políticas de negocios que según lo que estamos comentando va a ser una especie de monitor.
+
+Imagínense algo como el... ¿Cuál es la herramienta que utilizan para hacer un diagrama de actividad en la mesa del calle y sus proyectos? El diagrama también es el H. Esto va a tener que tener algo muy similar al H-Intech pero diseñado específicamente para llegar a aquellas actividades que nosotros vamos a ocupar como nuestro modelador de políticas de negocios. En alguna parte, por ejemplo, vamos a tener los departamentos de la empresa. En alguna parte, se tendrán que cargar al menos las actividades.
+
+Y luego en cada política de negocio vamos a hacer esa asociación. Pero todavía precisa una herramienta más el usuario. En teoría, yo voy a... soy el funcionario de la empresa voy a entrar al sistema y lo voy a ampliar.
+
+Y lo primero que va a aparecer es un monitor donde están todas las actividades que me componen. Seguramente marcarás como todos los tiempos. Verde, por ejemplo, puede ser la actividad de ti.
+
+Rojo seguramente son las que debo atender. Las que están, no sé, con amarillo pueden ser aquellas que estoy atendiendo todavía. O puedes colocar los amarillos.
+
+Los puedes separar por lo que están y en un solo momento lo vas a ver. El tema es que se valora demasiado la facilidad de uso. Esta herramienta a lo crítico es esto.
+
+Una herramienta que sea esto. Una herramienta fácil, gráfica, diseñada justamente para eso. Esto sí lo voy a compartir, esto sí lo voy a hacer.
+
+Yo, funcionario, voy a ver el diagrama de actividades alguna vez. Nunca lo voy a ver. El funcionario normal nunca lo va a ver.
+
+Él va a entrar solamente a su monitor y va a salir la actividad. Si le diga a uno para atender, le va a atender a su trabajo. Seguramente, según lo que se hubiera definido en la política del negocio, él tendrá que hacer algo.
+
+Lo menos que va a hacer será apertura a algo parecido a un formulario donde él tendrá que escribir su tarea, lo que está haciendo. Tal vez tiene que encargar imágenes, tal vez tiene que ir. Si no termina, le da OK terminado, entonces va a pasar al departamento siguiente de sonido.
+
+Eso lo hace el sonido. Yo no voy a decir, ¿sabes qué? Marcado atrás del departamento, yo no lo voy a decir. Es el software que solito, a través de su motor, según lo que se definió en la política del negocio vía el diagrama de actividades, debería enrutarlo a otro.
+
+Luego, eso va a seguir adelante. Pero hay otro tipo de usuario. El otro tipo de usuario vendría a ser el administrador o el que crea la política del negocio.
+
+Él sí. Él lo que va a hacer es que va a aparecer directamente la funcionalidad que le permita crear política del negocio. Y luego, obviamente, tendrá que darle.
+
+Y luego empezar a diseñarla. Diseñarla va a ser algo parecido a como si estuviera haciendo un diagrama de actividades organizado en el canal. Lo puede guardar, lo puede dejar pendiente.
+
+Voy a tomarme días diseñar la dicha política del negocio. Él es el que tiene que definir, por ejemplo, el flujo a seguir. El que está diseñando la política del negocio va a decir primero aquí, después acá, si sucede esto, te vas allá, si sucede aquello, te vas por allá.
+
+Esto de acá, después de lo que tú quieras. Tantas veces o mientras se cumpla tal condición, estas actividades se pueden hacer en paralelo. Es como si estuviera diseñando un diagrama de actividades organizadas en el canal para la política del negocio.
+
+Por ejemplo, en un banco, ¿qué ejemplos de políticas de cómo se pueden obtener? Habrá una política del negocio para perpetuar la cuenta. Habrá otra política de negocio, por ejemplo, para tramitar un crédito. Y la política del negocio para tramitar un crédito puede ser algo diferente, por ejemplo, un crédito por vehículo que para un crédito de un serial.
+
+Habrá otra política del negocio cuando quiero hacer transferencias. Entonces, el sistema debe, por ejemplo, si va a funcionar en un banco, debería posibilitar crear cualquier cantidad de política del negocio. ¿Y quién decide cuál es la política del negocio a andar? En teoría, no debería ser el equipo de acceso al cliente, ¿verdad? O sea, él dice el diagrama, el cliente dice necesito que trámite, no sé si será aquello, y él elige la política del negocio que corresponde a esa petición del usuario.
+
+Claro, ahorita lo vamos a mejorar un poquito más. Pero normal debería ser así. Lo normal es que el departamento adquisitivo del cliente, una vez que recibe el contacto del cliente, él decide cuál política del negocio es apropiada para atender la petición que que debemos almacenar o que debemos registrar.
+
+Para eso, uno, obviamente, la política del negocio tiene que estar completamente almacenada porque si no, no van a saber cuál es el proceso que se tiene. Dos, mínimamente, el trabajo que hace cada funcionario. Mucho hace rato, cada funcionario, cada vez que le llega una política del negocio para atender, se abre una especie de popular y él arraña su trabajo.
+
+Todo lo que acontece en el país se tendrá que atender. Por otro lado, debemos sacar un conjunto de analíticas importantes, determinar qué proceso más importante puede obtener el tiempo de atención Tal vez, por ejemplo, yo tengo dos funcionarios o tres funcionarios que hacen la misma tarea pero resulta que el trabajo de acá es mucho más eficiente con el triple de tiempo que queda. Y eso debería de ser una herramienta que me permite identificar qué es lo que está ocurriendo.
+
+El equipo o la persona que es el funcionario no precisa estar dándole cada parte del ciclo ni actualizando su trabajo. Hasta ahí no hay nada innovador del sector. Nada.
+
+Sistema común, corriente, de todos los tiempos. Y aquí empieza el examen. Quienes hacen sobre esto sirven pero para práctica.
+
+Nada. Cada uno ahorita va a notar qué agregaría de uno para los otros que son los que tienen su nombre, la fecha, el ciclo y la actualización del sistema común. Bien, inicialmente vamos a conocer los siguientes datos.
+
+Primero, donde la materia se tiene que incorporar para que se seca. Primero, el examen parcial, la fecha es importante. Hoy, ¿qué día es? Puede ser el día que se recuerde por ejemplo, puede ser el día del cárcico.
+
+¿Listos para colocar los datos? Vamos que van a tener poquito tiempo así que concéntrense. Cierren sus laptops, apaguen el celular, no van a estar intentándole a nadie, son ustedes. Si no tienen idea, tienen que mirar.
+
+Bueno, ¿qué tienen que hacer? Cada uno, cada uno de manera particular, sin conversar, agregue su innovación. O sea, ya está la herramienta planteada, ya está la necesidad planteada, ya sabemos lo que vamos a hacer, así como esta puede funcionar, sí puede funcionar, así como esta va a resolver el problema que teníamos, sí lo va a hacer, pero no tiene innovación. Entonces, cada uno agregue su innovación, describa su innovación, con el tipo de letras que yo les voy a dar ahorita, porque las letras que no se ve o no se entiendan son las mismas que están sin idea.
+
+¿Claro? Sí, sí. Cinco minutos. Sigue hablando.
+
+(Este archivo dura más de 30 minutos. Actualizar a Ilimitado en https://turboscribe.ai/es/ para transcribir archivos de hasta 10 horas.)

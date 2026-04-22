@@ -1,0 +1,140 @@
+<div class="tramites-container">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="btn-back" (click)="goBack()">← Dashboard</button>
+      <h2>Trámites</h2>
+    </div>
+  </header>
+
+  <div class="alert" *ngIf="message" [class.alert-success]="messageType === 'success'" [class.alert-error]="messageType === 'error'">
+    {{ message }}
+  </div>
+
+  <main class="content">
+    <div class="layout" [class.with-detail]="selectedTramite">
+
+      <!-- COLUMNA IZQUIERDA -->
+      <div class="left-panel">
+        <!-- Iniciar nuevo trámite -->
+        <div class="section-card" *ngIf="publishedPolicies.length > 0">
+          <h3>🚀 Iniciar Nuevo Trámite</h3>
+          <div class="policy-list">
+            <button class="policy-btn" *ngFor="let p of publishedPolicies" (click)="startTramite(p)">
+              <span class="policy-name">{{ p.name }}</span>
+              <span class="policy-desc">{{ p.description }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters">
+          <button [class.active]="activeFilter === 'all'" (click)="activeFilter = 'all'">Todos ({{ tramites.length }})</button>
+          <button [class.active]="activeFilter === 'EN_CURSO'" (click)="activeFilter = 'EN_CURSO'">🟡 En Curso</button>
+          <button [class.active]="activeFilter === 'COMPLETADO'" (click)="activeFilter = 'COMPLETADO'">🟢 Completados</button>
+          <button [class.active]="activeFilter === 'CANCELADO'" (click)="activeFilter = 'CANCELADO'">🔴 Cancelados</button>
+        </div>
+
+        <!-- Lista de trámites -->
+        <div class="tramite-list">
+          <div class="tramite-item" *ngFor="let t of filteredTramites"
+               [class.selected]="selectedTramite?.id === t.id"
+               (click)="viewTramite(t)">
+            <div class="tramite-header">
+              <span class="tramite-name">{{ t.policyName }}</span>
+              <span class="tramite-status" [attr.data-status]="t.status">{{ t.status }}</span>
+            </div>
+            <div class="tramite-meta">
+              <span>👤 {{ t.requestedByName }}</span>
+              <span>📅 {{ t.createdAt | date:'dd/MM/yy HH:mm' }}</span>
+            </div>
+            <div class="tramite-progress">
+              <span>{{ getCompletedSteps(t).length }} de {{ t.steps.length }} pasos completados</span>
+            </div>
+          </div>
+
+          <div class="empty" *ngIf="filteredTramites.length === 0">
+            No hay trámites {{ activeFilter !== 'all' ? 'con estado ' + activeFilter : '' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: Detalle del trámite -->
+      <div class="detail-panel" *ngIf="selectedTramite">
+        <div class="detail-header">
+          <h3>{{ selectedTramite.policyName }}</h3>
+          <div class="detail-actions">
+            <button class="btn-cancel" *ngIf="selectedTramite.status === 'EN_CURSO'" (click)="cancelTramite(selectedTramite.id!)">Cancelar</button>
+            <button class="btn-close" (click)="closeTramite()">✕</button>
+          </div>
+        </div>
+
+        <div class="detail-info">
+          <div class="info-row"><span>Estado:</span> <span [innerHTML]="getStatusLabel(selectedTramite.status)"></span></div>
+          <div class="info-row"><span>Solicitante:</span> <span>{{ selectedTramite.requestedByName }}</span></div>
+          <div class="info-row"><span>Iniciado:</span> <span>{{ selectedTramite.createdAt | date:'dd/MM/yyyy HH:mm' }}</span></div>
+          <div class="info-row" *ngIf="selectedTramite.completedAt"><span>Completado:</span> <span>{{ selectedTramite.completedAt | date:'dd/MM/yyyy HH:mm' }}</span></div>
+        </div>
+
+        <!-- Tareas pendientes -->
+        <div class="pending-section" *ngIf="getPendingSteps(selectedTramite).length > 0">
+          <h4>⏳ Tareas Pendientes</h4>
+          <div class="task-card pending" *ngFor="let step of getPendingSteps(selectedTramite)">
+            <div class="task-info">
+              <span class="task-name">{{ step.nodeLabel }}</span>
+              <span class="task-date">Asignada: {{ step.assignedAt | date:'dd/MM HH:mm' }}</span>
+            </div>
+            <button class="btn-complete" (click)="openCompleteTask(selectedTramite.id!, step.nodeId, step.nodeLabel)">
+              ✅ Completar
+            </button>
+          </div>
+        </div>
+
+        <!-- Historial -->
+        <div class="history-section">
+          <h4>📜 Historial</h4>
+          <div class="timeline">
+            <div class="timeline-item" *ngFor="let step of selectedTramite.steps">
+              <span class="timeline-icon">{{ getStepStatusIcon(step.status) }}</span>
+              <div class="timeline-content">
+                <span class="timeline-label">{{ step.nodeLabel }}</span>
+                <span class="timeline-meta" *ngIf="step.completedByName">por {{ step.completedByName }}</span>
+                <span class="timeline-meta" *ngIf="step.comment">💬 {{ step.comment }}</span>
+                <span class="timeline-date" *ngIf="step.completedAt">{{ step.completedAt | date:'dd/MM HH:mm' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: Completar tarea -->
+  <div class="modal-overlay" *ngIf="showCompleteModal" (click)="showCompleteModal = false">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h3>Completar: {{ completingTask?.taskName }}</h3>
+
+      <div class="form-group">
+        <label>Variables del Trámite (Datos)</label>
+        <p class="hint">Agrega los datos necesarios para las decisiones (ej: monto)</p>
+        <div class="dynamic-fields">
+          <div class="field-row" *ngFor="let field of taskDataFields; let i = index">
+            <input type="text" [(ngModel)]="field.key" placeholder="Variable (ej: monto)" class="field-key" />
+            <input type="text" [(ngModel)]="field.value" placeholder="Valor (ej: 150)" class="field-value" />
+            <button class="btn-remove" (click)="removeDataField(i)">✕</button>
+          </div>
+          <button class="btn-add-field" (click)="addDataField()">➕ Agregar Variable</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Observaciones / Comentarios</label>
+        <textarea [(ngModel)]="taskComment" placeholder="Comentario o resultado de la actividad..." rows="3"></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="showCompleteModal = false">Cancelar</button>
+        <button class="btn-primary" (click)="submitTask()">✅ Completar Tarea</button>
+      </div>
+    </div>
+  </div>
+</div>

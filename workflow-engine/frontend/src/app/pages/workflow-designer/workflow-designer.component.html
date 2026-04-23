@@ -229,6 +229,35 @@
           <span class="info-text">{{ getSwimlaneNameForNode(selectedNode) }}</span>
         </div>
 
+        <!-- CONFIGURACIÓN DE FORMULARIO (Solo para ACTIVIDAD) -->
+        <div class="prop-group" *ngIf="selectedNode.type === 'ACTIVITY'">
+          <label style="color: #8b9cf7; font-weight: 600; display: block; margin-bottom: 0.5rem;">📝 Formulario del Nodo</label>
+          <div class="form-fields-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">
+            <div class="field-item" *ngFor="let field of selectedNode.formFields; let i = index" style="background: rgba(255,255,255,0.03); padding: 0.5rem; border-radius: 8px;">
+              <div class="field-header" style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                <input type="text" [(ngModel)]="field.label" placeholder="Etiqueta" style="width: 85%; font-size: 0.8rem;" />
+                <button (click)="removeFormField(i)" style="background: none; border: none; color: #ef4444; cursor: pointer;">✕</button>
+              </div>
+              <div class="field-row" style="display: flex; gap: 0.5rem; align-items: center;">
+                <select [(ngModel)]="field.type" style="font-size: 0.75rem; flex: 1;">
+                  <option value="TEXT">Texto</option>
+                  <option value="NUMBER">Número</option>
+                  <option value="DATE">Fecha</option>
+                  <option value="TEXTAREA">Área de texto</option>
+                  <option value="SELECT">Selección</option>
+                  <option value="CHECKBOX">Check</option>
+                </select>
+                <label style="font-size: 0.7rem; display: flex; align-items: center; gap: 0.2rem; white-space: nowrap;">
+                  <input type="checkbox" [(ngModel)]="field.required" /> Req.
+                </label>
+              </div>
+            </div>
+            <button class="btn-add-field" (click)="addFormField()" style="background: rgba(102,126,234,0.1); border: 1px dashed #667eea; border-radius: 6px; padding: 0.3rem; color: #8b9cf7; font-size: 0.8rem; cursor: pointer;">
+              ➕ Agregar Campo
+            </button>
+          </div>
+        </div>
+
         <div class="prop-actions">
           <button class="btn-connect" (click)="startConnection(selectedNode)">🔗 Conectar</button>
           <button class="btn-delete-node" (click)="deleteNode(selectedNode.id)">🗑️ Eliminar</button>

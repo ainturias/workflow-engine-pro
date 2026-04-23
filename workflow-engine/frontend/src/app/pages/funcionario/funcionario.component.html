@@ -1,0 +1,172 @@
+<div class="funcionario-container">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="btn-back" (click)="goBack()">← Dashboard</button>
+      <h2>Panel del Funcionario</h2>
+    </div>
+    <div class="topbar-right" *ngIf="currentUser">
+      <div class="user-badge">
+        <span class="avatar">{{ currentUser.firstName[0] }}{{ currentUser.lastName[0] }}</span>
+        <div class="user-text">
+          <span class="name">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
+          <span class="dept">Depto: {{ currentUser.departmentName || 'Sin asignar' }}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mensaje de alerta si no tiene departamento -->
+  <div class="no-dept-alert" *ngIf="!currentUser?.departmentId">
+    ⚠️ No tienes un departamento asignado. Pide a un administrador que te asigne uno para ver tus tareas.
+  </div>
+
+  <div class="alert" *ngIf="message" [class.alert-success]="messageType === 'success'" [class.alert-error]="messageType === 'error'">
+    {{ message }}
+  </div>
+
+  <main class="content" *ngIf="currentUser?.departmentId">
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat" [class.active]="activeTab === 'pending'" (click)="activeTab = 'pending'">
+        <span class="stat-count pending-count">{{ pendingTasks.length }}</span>
+        <span class="stat-label">⏳ Pendientes</span>
+      </div>
+      <div class="stat" [class.active]="activeTab === 'completed'" (click)="activeTab = 'completed'">
+        <span class="stat-count completed-count">{{ completedTasks.length }}</span>
+        <span class="stat-label">✅ Completadas</span>
+      </div>
+    </div>
+
+    <!-- TAREAS PENDIENTES -->
+    <div class="task-list" *ngIf="activeTab === 'pending'">
+      <div class="task-card pending" *ngFor="let task of pendingTasks" (click)="openTaskModal(task)">
+        <div class="task-left">
+          <div class="task-indicator pending-indicator"></div>
+          <div class="task-details">
+            <span class="task-name">{{ task.taskName }}</span>
+            <span class="task-tramite">📋 {{ task.tramiteName }}</span>
+            <span class="task-meta">Solicitado por {{ task.requestedBy }} · {{ getTimeAgo(task.assignedAt) }}</span>
+          </div>
+        </div>
+        <div class="task-right">
+          <span class="form-badge" *ngIf="task.formFields && task.formFields.length > 0">
+            📝 {{ task.formFields.length }} campos
+          </span>
+          <button class="btn-work">Atender →</button>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="pendingTasks.length === 0">
+        <span class="empty-icon">🎉</span>
+        <p>No tienes tareas pendientes</p>
+        <span class="empty-sub">Las tareas aparecerán aquí cuando un trámite llegue a tu departamento</span>
+      </div>
+    </div>
+
+    <!-- TAREAS COMPLETADAS -->
+    <div class="task-list" *ngIf="activeTab === 'completed'">
+      <div class="task-card completed" *ngFor="let task of completedTasks">
+        <div class="task-left">
+          <div class="task-indicator completed-indicator"></div>
+          <div class="task-details">
+            <span class="task-name">{{ task.taskName }}</span>
+            <span class="task-tramite">📋 {{ task.tramiteName }}</span>
+            <span class="task-meta">
+              Completado por {{ task.completedByName }}
+              <span *ngIf="task.completedAt"> · {{ task.completedAt | date:'dd/MM HH:mm' }}</span>
+            </span>
+            <span class="task-comment" *ngIf="task.comment">💬 {{ task.comment }}</span>
+          </div>
+        </div>
+        <div class="task-right">
+          <span class="status-done">Completada ✓</span>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="completedTasks.length === 0">
+        <p>No hay tareas completadas aún</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: Formulario dinámico -->
+  <div class="modal-overlay" *ngIf="showTaskModal" (click)="closeTaskModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ selectedTask?.taskName }}</h3>
+        <button class="btn-close" (click)="closeTaskModal()">✕</button>
+      </div>
+
+      <div class="modal-info">
+        <span>📋 {{ selectedTask?.tramiteName }}</span>
+        <span>👤 Solicitado por {{ selectedTask?.requestedBy }}</span>
+      </div>
+
+      <!-- FORMULARIO DINÁMICO -->
+      <div class="dynamic-form" *ngIf="selectedTask?.formFields && selectedTask!.formFields!.length > 0">
+        <h4>📝 Formulario</h4>
+        <div class="form-field" *ngFor="let field of selectedTask?.formFields">
+          <!-- TEXT -->
+          <div *ngIf="field.type === 'TEXT'" class="field-group">
+            <label [class.required]="field.required">{{ field.label }}</label>
+            <input type="text" [(ngModel)]="formValues[field.name]" [placeholder]="field.label" />
+          </div>
+
+          <!-- NUMBER -->
+          <div *ngIf="field.type === 'NUMBER'" class="field-group">
+            <label [class.required]="field.required">{{ field.label }}</label>
+            <input type="number" [(ngModel)]="formValues[field.name]" [placeholder]="field.label" />
+          </div>
+
+          <!-- DATE -->
+          <div *ngIf="field.type === 'DATE'" class="field-group">
+            <label [class.required]="field.required">{{ field.label }}</label>
+            <input type="date" [(ngModel)]="formValues[field.name]" />
+          </div>
+
+          <!-- TEXTAREA -->
+          <div *ngIf="field.type === 'TEXTAREA'" class="field-group">
+            <label [class.required]="field.required">{{ field.label }}</label>
+            <textarea [(ngModel)]="formValues[field.name]" [placeholder]="field.label" rows="3"></textarea>
+          </div>
+
+          <!-- SELECT -->
+          <div *ngIf="field.type === 'SELECT'" class="field-group">
+            <label [class.required]="field.required">{{ field.label }}</label>
+            <select [(ngModel)]="formValues[field.name]">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
+            </select>
+          </div>
+
+          <!-- CHECKBOX -->
+          <div *ngIf="field.type === 'CHECKBOX'" class="field-group checkbox-group">
+            <label>
+              <input type="checkbox" [(ngModel)]="formValues[field.name]" />
+              {{ field.label }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Si no tiene formFields, mostrar campos manuales -->
+      <div class="no-form-hint" *ngIf="!selectedTask?.formFields || selectedTask?.formFields?.length === 0">
+        <p>Esta actividad no tiene formulario configurado.</p>
+      </div>
+
+      <div class="form-field">
+        <div class="field-group">
+          <label>Observaciones / Comentarios</label>
+          <textarea [(ngModel)]="taskComment" placeholder="Resultado de la actividad..." rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="closeTaskModal()">Cancelar</button>
+        <button class="btn-primary" (click)="submitTask()" [disabled]="!isFormValid()">
+          ✅ Completar Tarea
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

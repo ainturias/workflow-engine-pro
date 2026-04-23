@@ -68,7 +68,9 @@ export class AuthService {
       email: response.email,
       firstName: response.firstName,
       lastName: response.lastName,
-      role: response.role
+      role: response.role,
+      departmentId: response.departmentId,
+      departmentName: response.departmentName
     };
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSubject.next(user);

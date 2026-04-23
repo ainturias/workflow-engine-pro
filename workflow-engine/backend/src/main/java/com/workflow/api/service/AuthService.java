@@ -4,6 +4,7 @@ import com.workflow.api.dto.AuthResponse;
 import com.workflow.api.dto.LoginRequest;
 import com.workflow.api.dto.RegisterRequest;
 import com.workflow.api.model.User;
+import com.workflow.api.repository.DepartmentRepository;
 import com.workflow.api.repository.UserRepository;
 import com.workflow.api.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
@@ -72,6 +74,13 @@ public class AuthService {
 
         String token = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
 
+        String departmentName = null;
+        if (user.getDepartmentId() != null) {
+            departmentName = departmentRepository.findById(user.getDepartmentId())
+                    .map(d -> d.getName())
+                    .orElse(null);
+        }
+
         return AuthResponse.builder()
                 .token(token)
                 .id(user.getId())
@@ -79,6 +88,8 @@ public class AuthService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .role(user.getRole())
+                .departmentId(user.getDepartmentId())
+                .departmentName(departmentName)
                 .build();
     }
 }

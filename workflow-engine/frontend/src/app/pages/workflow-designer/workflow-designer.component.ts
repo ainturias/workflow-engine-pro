@@ -225,6 +225,26 @@ export class WorkflowDesignerComponent implements OnInit {
     this.connectingFrom = null;
   }
 
+  // ==================== GESTIÓN DE FORMULARIO ====================
+  addFormField(): void {
+    if (!this.selectedNode) return;
+    if (!this.selectedNode.formFields) {
+      this.selectedNode.formFields = [];
+    }
+    this.selectedNode.formFields.push({
+      name: 'campo_' + Date.now(),
+      label: 'Nuevo Campo',
+      type: 'TEXT',
+      required: false
+    });
+  }
+
+  removeFormField(index: number): void {
+    if (this.selectedNode && this.selectedNode.formFields) {
+      this.selectedNode.formFields.splice(index, 1);
+    }
+  }
+
   createTransition(from: WorkflowNode, to: WorkflowNode): void {
     if (from.id === to.id) return;
 

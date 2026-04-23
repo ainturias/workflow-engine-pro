@@ -334,12 +334,15 @@ public class WorkflowEngineService {
 
     /**
      * Busca tareas pendientes para un departamento específico.
+     * Incluye los formFields del nodo para renderizar formularios dinámicos.
      */
     public List<Map<String, Object>> findPendingTasksByDepartment(String departmentId) {
         List<Tramite> activeTramites = tramiteRepository.findByStatus("EN_CURSO");
         List<Map<String, Object>> tasks = new ArrayList<>();
 
         for (Tramite tramite : activeTramites) {
+            WorkflowPolicy policy = policyRepository.findById(tramite.getPolicyId()).orElse(null);
+
             for (TramiteStep step : tramite.getSteps()) {
                 if ("PENDING".equals(step.getStatus()) && departmentId.equals(step.getDepartmentId())) {
                     Map<String, Object> task = new HashMap<>();
@@ -350,12 +353,76 @@ public class WorkflowEngineService {
                     task.put("taskName", step.getNodeLabel());
                     task.put("assignedAt", step.getAssignedAt());
                     task.put("requestedBy", tramite.getRequestedByName());
+                    task.put("tramiteData", tramite.getData());
+
+                    // Incluir formFields del nodo
+                    if (policy != null) {
+                        policy.getNodes().stream()
+                                .filter(n -> n.getId().equals(step.getNodeId()))
+                                .findFirst()
+                                .ifPresent(node -> task.put("formFields", node.getFormFields()));
+                    }
+
                     tasks.add(task);
                 }
             }
         }
 
         return tasks;
+    }
+
+    /**
+     * Busca todas las tareas de un usuario (por departamento) organizadas por estado.
+     */
+    public Map<String, Object> findTasksForUser(String departmentId) {
+        List<Tramite> allTramites = tramiteRepository.findAll();
+        List<Map<String, Object>> pending = new ArrayList<>();
+        List<Map<String, Object>> completed = new ArrayList<>();
+
+        for (Tramite tramite : allTramites) {
+            WorkflowPolicy policy = policyRepository.findById(tramite.getPolicyId()).orElse(null);
+
+            for (TramiteStep step : tramite.getSteps()) {
+                // FILTRO: Solo mostrar actividades (nodos humanos) del departamento solicitado
+                if (!departmentId.equals(step.getDepartmentId()) || !"ACTIVITY".equals(step.getNodeType())) continue;
+
+                Map<String, Object> task = new HashMap<>();
+                task.put("tramiteId", tramite.getId());
+                task.put("tramiteName", tramite.getPolicyName());
+                task.put("stepId", step.getId());
+                task.put("nodeId", step.getNodeId());
+                task.put("taskName", step.getNodeLabel());
+                task.put("status", step.getStatus());
+                task.put("assignedAt", step.getAssignedAt());
+                task.put("completedAt", step.getCompletedAt());
+                task.put("completedByName", step.getCompletedByName());
+                task.put("comment", step.getComment());
+                task.put("requestedBy", tramite.getRequestedByName());
+                task.put("tramiteStatus", tramite.getStatus());
+                task.put("tramiteData", tramite.getData());
+
+                // Incluir formFields del nodo
+                if (policy != null) {
+                    policy.getNodes().stream()
+                            .filter(n -> n.getId().equals(step.getNodeId()))
+                            .findFirst()
+                            .ifPresent(node -> task.put("formFields", node.getFormFields()));
+                }
+
+                if ("PENDING".equals(step.getStatus())) {
+                    pending.add(task);
+                } else if ("COMPLETED".equals(step.getStatus())) {
+                    completed.add(task);
+                }
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("pending", pending);
+        result.put("completed", completed);
+        result.put("pendingCount", pending.size());
+        result.put("completedCount", completed.size());
+        return result;
     }
 
     /**

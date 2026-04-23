@@ -38,6 +38,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/tramites']);
   }
 
+  goToFuncionario(): void {
+    this.router.navigate(['/funcionario']);
+  }
+
   isAdmin(): boolean {
     return this.user?.role === 'ADMIN';
   }

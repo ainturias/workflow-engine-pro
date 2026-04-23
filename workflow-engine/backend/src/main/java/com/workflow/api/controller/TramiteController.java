@@ -105,6 +105,14 @@ public class TramiteController {
     }
 
     /**
+     * Todas las tareas de un usuario por departamento (pendientes + completadas)
+     */
+    @GetMapping("/tasks/user/{departmentId}")
+    public ResponseEntity<Map<String, Object>> getUserTasks(@PathVariable String departmentId) {
+        return ResponseEntity.ok(engineService.findTasksForUser(departmentId));
+    }
+
+    /**
      * Cancelar un trámite
      */
     @PatchMapping("/{id}/cancel")

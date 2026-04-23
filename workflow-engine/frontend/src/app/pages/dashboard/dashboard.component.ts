@@ -66,7 +66,6 @@ export class DashboardComponent implements OnInit {
   goToAnalytics(): void {
     this.router.navigate(['/analytics']);
   }
-  }
 
   isAdmin(): boolean {
     return this.user?.role === 'ADMIN';

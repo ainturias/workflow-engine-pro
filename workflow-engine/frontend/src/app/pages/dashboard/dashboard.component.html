@@ -14,6 +14,7 @@
       <button class="btn-policies" (click)="goToPolicies()">📋 Políticas</button>
       <button class="btn-tramites" (click)="goToTramites()">📂 Trámites</button>
       <button class="btn-funcionario" (click)="goToFuncionario()">🧑‍💼 Mi Panel</button>
+      <button class="btn-analytics" *ngIf="isAdmin()" (click)="goToAnalytics()">📊 Analíticas</button>
       <button class="btn-admin" *ngIf="isAdmin()" (click)="goToAdmin()">⚙️ Admin</button>
       <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
     </div>
@@ -30,28 +31,28 @@
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">📋</div>
         <div class="stat-info">
-          <span class="stat-value">0</span>
+          <span class="stat-value">{{ metrics?.totalActive ?? 0 }}</span>
           <span class="stat-label">Trámites Activos</span>
         </div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">⚡</div>
         <div class="stat-info">
-          <span class="stat-value">0</span>
-          <span class="stat-label">Tareas Pendientes</span>
+          <span class="stat-value">{{ metrics?.totalTramites ?? 0 }}</span>
+          <span class="stat-label">Total Trámites</span>
         </div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">✅</div>
         <div class="stat-info">
-          <span class="stat-value">0</span>
+          <span class="stat-value">{{ metrics?.totalCompleted ?? 0 }}</span>
           <span class="stat-label">Completados</span>
         </div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">📊</div>
         <div class="stat-info">
-          <span class="stat-value">0</span>
+          <span class="stat-value">{{ policiesCount }}</span>
           <span class="stat-label">Políticas de Negocio</span>
         </div>
       </div>

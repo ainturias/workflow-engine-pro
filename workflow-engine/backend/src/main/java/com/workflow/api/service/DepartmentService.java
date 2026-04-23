@@ -45,9 +45,6 @@ public class DepartmentService {
     }
 
     public void delete(String id) {
-        Department department = findById(id);
-        department.setActive(false);
-        department.setUpdatedAt(LocalDateTime.now());
-        departmentRepository.save(department);
+        departmentRepository.deleteById(id);
     }
 }

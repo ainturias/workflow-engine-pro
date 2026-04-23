@@ -43,6 +43,10 @@ export class TramiteService {
     return this.http.get<PendingTask[]>(`${this.API_URL}/tasks/department/${departmentId}`);
   }
 
+  getUserTasks(departmentId: string): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/tasks/user/${departmentId}`);
+  }
+
   cancel(id: string): Observable<Tramite> {
     return this.http.patch<Tramite>(`${this.API_URL}/${id}/cancel`, {});
   }

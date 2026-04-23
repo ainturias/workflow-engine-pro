@@ -59,6 +59,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/tramites']);
   }
 
+  goToFuncionario(): void {
+    this.router.navigate(['/funcionario']);
+  }
+
   goToAnalytics(): void {
     this.router.navigate(['/analytics']);
   }

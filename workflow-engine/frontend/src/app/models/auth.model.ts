@@ -18,6 +18,8 @@ export interface AuthResponse {
   firstName: string;
   lastName: string;
   role: string;
+  departmentId?: string;
+  departmentName?: string;
 }
 
 export interface User {
@@ -27,4 +29,5 @@ export interface User {
   lastName: string;
   role: string;
   departmentId?: string;
+  departmentName?: string;
 }

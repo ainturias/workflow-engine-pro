@@ -1,0 +1,219 @@
+<div class="analytics-container">
+  <!-- Header -->
+  <header class="analytics-header">
+    <div class="header-left">
+      <button class="btn-back" (click)="goBack()">← Volver</button>
+      <h1>📊 Monitoreo y Analíticas</h1>
+    </div>
+    <button class="btn-refresh" (click)="loadData()">🔄 Actualizar</button>
+  </header>
+
+  <!-- Loading state -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando métricas...</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="error-container" *ngIf="error">
+    <div class="error-card">
+      <span class="error-icon">⚠️</span>
+      <p>{{ error }}</p>
+      <button class="btn-retry" (click)="loadData()">Reintentar</button>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard-content" *ngIf="!loading && !error && summary">
+
+    <!-- KPI Cards -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">📋</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ summary.generalMetrics.totalActive }}</span>
+          <span class="kpi-label">En Curso</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">✅</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ summary.generalMetrics.totalCompleted }}</span>
+          <span class="kpi-label">Completados</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background: linear-gradient(135deg, #f5576c, #ff6b6b);">❌</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ summary.generalMetrics.totalCancelled }}</span>
+          <span class="kpi-label">Cancelados</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">⏱️</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ formatHours(summary.generalMetrics.avgResolutionHours) }}</span>
+          <span class="kpi-label">Tiempo Prom. Resolución</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Row 1: Doughnut + Line -->
+    <section class="charts-row">
+      <div class="chart-card">
+        <h3>Distribución por Estado</h3>
+        <div class="chart-wrapper doughnut-wrapper">
+          <canvas baseChart
+            [data]="doughnutData"
+            [options]="doughnutOptions"
+            type="doughnut">
+          </canvas>
+          <div class="doughnut-center" *ngIf="summary">
+            <span class="doughnut-total">{{ summary.generalMetrics.totalTramites }}</span>
+            <span class="doughnut-label">Total</span>
+          </div>
+        </div>
+      </div>
+      <div class="chart-card chart-card-wide">
+        <h3>Tendencia de Trámites (Últimos 30 días)</h3>
+        <div class="chart-wrapper">
+          <canvas baseChart
+            [data]="lineData"
+            [options]="lineOptions"
+            type="line">
+          </canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chart Row 2: Trámites por Política -->
+    <section class="chart-section" *ngIf="summary.generalMetrics.tramitesByPolicy.length > 0">
+      <div class="chart-card chart-card-full">
+        <h3>Trámites por Política de Negocio</h3>
+        <div class="chart-wrapper chart-wrapper-medium">
+          <canvas baseChart
+            [data]="policyBarData"
+            [options]="policyBarOptions"
+            type="bar">
+          </canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Funcionarios -->
+    <section class="section-block">
+      <h2 class="section-title">👥 Métricas por Funcionario</h2>
+
+      <div *ngIf="summary.funcionarioMetrics.length === 0" class="empty-state">
+        <span>📭</span>
+        <p>No hay funcionarios registrados o no han procesado tareas aún.</p>
+      </div>
+
+      <div *ngIf="summary.funcionarioMetrics.length > 0">
+        <!-- Chart -->
+        <div class="chart-card chart-card-full">
+          <h3>Comparación de Funcionarios</h3>
+          <div class="chart-wrapper chart-wrapper-medium">
+            <canvas baseChart
+              [data]="funcionarioBarData"
+              [options]="funcionarioBarOptions"
+              type="bar">
+            </canvas>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Funcionario</th>
+                <th>Departamento</th>
+                <th>Tareas Completadas</th>
+                <th>Tiempo Prom.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let f of summary.funcionarioMetrics; let i = index">
+                <td class="rank-cell">
+                  <span class="rank-badge" [class.rank-gold]="i === 0" [class.rank-silver]="i === 1" [class.rank-bronze]="i === 2">
+                    {{ i + 1 }}
+                  </span>
+                </td>
+                <td class="name-cell">{{ f.name }}</td>
+                <td class="dept-cell">{{ f.departmentName }}</td>
+                <td class="tasks-cell">
+                  <span class="tasks-badge">{{ f.tasksCompleted }}</span>
+                </td>
+                <td class="time-cell">{{ formatHours(f.avgAttentionHours) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cuellos de Botella -->
+    <section class="section-block">
+      <h2 class="section-title">🔴 Cuellos de Botella Detectados</h2>
+
+      <div *ngIf="summary.bottlenecks.length === 0" class="empty-state success-state">
+        <span>🎉</span>
+        <p>¡No se detectaron cuellos de botella! Todo fluye correctamente.</p>
+      </div>
+
+      <div class="bottleneck-grid" *ngIf="summary.bottlenecks.length > 0">
+        <div class="bottleneck-card" *ngFor="let b of summary.bottlenecks"
+             [class]="getSeverityClass(b.severity)">
+          <div class="bottleneck-header">
+            <span class="bottleneck-severity">{{ getSeverityLabel(b.severity) }}</span>
+            <span class="bottleneck-wait">{{ formatHours(b.avgWaitHours) }} en espera</span>
+          </div>
+          <h4 class="bottleneck-node">{{ b.nodeLabel }}</h4>
+          <div class="bottleneck-details">
+            <span>📋 {{ b.policyName }}</span>
+            <span>🏢 {{ b.departmentName }}</span>
+            <span>📌 {{ b.pendingCount }} pendiente{{ b.pendingCount !== 1 ? 's' : '' }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Carga por Departamento -->
+    <section class="section-block" *ngIf="summary.departmentLoads.length > 0">
+      <h2 class="section-title">🏢 Carga por Departamento</h2>
+
+      <div class="chart-card chart-card-full">
+        <h3>Tareas Pendientes por Departamento</h3>
+        <div class="chart-wrapper chart-wrapper-medium">
+          <canvas baseChart
+            [data]="deptBarData"
+            [options]="deptBarOptions"
+            type="bar">
+          </canvas>
+        </div>
+      </div>
+
+      <div class="dept-grid">
+        <div class="dept-card" *ngFor="let d of summary.departmentLoads">
+          <div class="dept-header">
+            <h4>{{ d.name }}</h4>
+            <span class="saturation-badge" [class]="getSaturationClass(d.saturationLevel)">
+              {{ d.saturationLevel }}%
+            </span>
+          </div>
+          <div class="dept-bar-container">
+            <div class="dept-bar" [style.width.%]="d.saturationLevel" [class]="getSaturationClass(d.saturationLevel)"></div>
+          </div>
+          <div class="dept-stats">
+            <span>📌 {{ d.pendingTasks }} pendiente{{ d.pendingTasks !== 1 ? 's' : '' }}</span>
+            <span>📂 {{ d.activeTramites }} trámite{{ d.activeTramites !== 1 ? 's' : '' }}</span>
+            <span *ngIf="d.avgWaitHours > 0">⏱️ {{ formatHours(d.avgWaitHours) }} espera</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

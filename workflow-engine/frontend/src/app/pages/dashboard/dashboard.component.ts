@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { AnalyticsService } from '../../services/analytics.service';
 import { User } from '../../models/auth.model';
+import { GeneralMetrics } from '../../models/analytics.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,12 +15,31 @@ import { User } from '../../models/auth.model';
 })
 export class DashboardComponent implements OnInit {
   user: User | null = null;
+  metrics: GeneralMetrics | null = null;
+  policiesCount = 0;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private analyticsService: AnalyticsService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.user = user;
+    });
+    this.loadMetrics();
+  }
+
+  loadMetrics(): void {
+    this.analyticsService.getGeneralMetrics().subscribe({
+      next: (data) => {
+        this.metrics = data;
+        this.policiesCount = data.tramitesByPolicy?.length || 0;
+      },
+      error: () => {
+        // Fail silently — dashboard still works without metrics
+      }
     });
   }
 
@@ -36,6 +57,10 @@ export class DashboardComponent implements OnInit {
 
   goToTramites(): void {
     this.router.navigate(['/tramites']);
+  }
+
+  goToAnalytics(): void {
+    this.router.navigate(['/analytics']);
   }
 
   isAdmin(): boolean {

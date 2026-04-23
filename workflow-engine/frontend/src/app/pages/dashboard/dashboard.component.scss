@@ -91,6 +91,21 @@
   }
 }
 
+.btn-analytics {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: #c084fc;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(168, 85, 247, 0.25);
+  }
+}
+
 .btn-admin {
   background: rgba(102, 126, 234, 0.15);
   border: 1px solid rgba(102, 126, 234, 0.3);

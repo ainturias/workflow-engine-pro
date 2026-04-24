@@ -49,4 +49,11 @@ public class UserService {
         user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
     }
+
+    public User updateFcmToken(String userId, String fcmToken) {
+        User user = findById(userId);
+        user.setFcmToken(fcmToken);
+        user.setUpdatedAt(LocalDateTime.now());
+        return userRepository.save(user);
+    }
 }

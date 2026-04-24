@@ -22,6 +22,7 @@ public class WorkflowEngineService {
 
     private final TramiteRepository tramiteRepository;
     private final WorkflowPolicyRepository policyRepository;
+    private final NotificationService notificationService;
 
     /**
      * Inicia un nuevo trámite basado en una política publicada.
@@ -95,7 +96,32 @@ public class WorkflowEngineService {
         advanceFromNode(tramite, policy, nodeId, formData);
 
         tramite.setUpdatedAt(LocalDateTime.now());
-        return tramiteRepository.save(tramite);
+        Tramite saved = tramiteRepository.save(tramite);
+
+        // === Push Notifications ===
+        try {
+            // Notificar al cliente que su trámite avanzó
+            notificationService.notifyTramiteProgress(
+                    tramite.getRequestedBy(),
+                    tramite.getPolicyName(),
+                    node.getLabel()
+            );
+
+            // Notificar a funcionarios si hay nuevas tareas pendientes
+            for (TramiteStep s : tramite.getSteps()) {
+                if ("PENDING".equals(s.getStatus()) && s.getDepartmentId() != null) {
+                    notificationService.notifyNewTaskForDepartment(
+                            s.getDepartmentId(),
+                            tramite.getPolicyName(),
+                            s.getNodeLabel()
+                    );
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Error enviando notificaciones push: {}", e.getMessage());
+        }
+
+        return saved;
     }
 
     /**

@@ -64,4 +64,14 @@ public class UserController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
+    @PutMapping("/{id}/fcm-token")
+    public ResponseEntity<?> updateFcmToken(@PathVariable String id, @RequestBody Map<String, String> body) {
+        try {
+            User user = userService.updateFcmToken(id, body.get("fcmToken"));
+            return ResponseEntity.ok(Map.of("message", "FCM token actualizado"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
 }

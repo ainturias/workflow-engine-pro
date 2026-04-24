@@ -37,6 +37,11 @@ public class User {
      */
     private String departmentId;
 
+    /**
+     * Token de Firebase Cloud Messaging para push notifications
+     */
+    private String fcmToken;
+
     @Builder.Default
     private boolean active = true;
 

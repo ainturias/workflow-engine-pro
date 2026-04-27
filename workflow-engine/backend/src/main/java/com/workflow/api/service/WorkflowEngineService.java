@@ -178,6 +178,7 @@ public class WorkflowEngineService {
                         .departmentId(node.getDepartmentId())
                         .status("PENDING")
                         .assignedAt(LocalDateTime.now())
+                        .formFields(node.getFormFields()) // <--- AQUÍ: Copiamos el diseño
                         .build();
                 tramite.getSteps().add(step);
                 tramite.getActiveNodeIds().add(node.getId());
@@ -346,8 +347,23 @@ public class WorkflowEngineService {
     }
 
     public Tramite findById(String id) {
-        return tramiteRepository.findById(id)
+        Tramite tramite = tramiteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Trámite no encontrado"));
+        
+        // Enriquecer pasos con sus diseños de formulario
+        WorkflowPolicy policy = policyRepository.findById(tramite.getPolicyId()).orElse(null);
+        if (policy != null) {
+            for (TramiteStep step : tramite.getSteps()) {
+                if (step.getFormFields() == null || step.getFormFields().isEmpty()) {
+                    policy.getNodes().stream()
+                        .filter(n -> n.getId().equals(step.getNodeId()))
+                        .findFirst()
+                        .ifPresent(node -> step.setFormFields(node.getFormFields()));
+                }
+            }
+        }
+        
+        return tramite;
     }
 
     public List<Tramite> findByStatus(String status) {
@@ -436,12 +452,30 @@ public class WorkflowEngineService {
                 }
 
                 if ("PENDING".equals(step.getStatus())) {
-                    pending.add(task);
+                    // Si el trámite está cancelado o completado, no se puede atender
+                    if (!"CANCELADO".equals(tramite.getStatus()) && !"COMPLETADO".equals(tramite.getStatus())) {
+                        pending.add(task);
+                    }
                 } else if ("COMPLETED".equals(step.getStatus())) {
                     completed.add(task);
                 }
             }
         }
+
+        // Ordenar de más reciente a más antiguo
+        pending.sort((a, b) -> {
+            LocalDateTime dateA = (LocalDateTime) a.get("assignedAt");
+            LocalDateTime dateB = (LocalDateTime) b.get("assignedAt");
+            if (dateA == null || dateB == null) return 0;
+            return dateB.compareTo(dateA);
+        });
+
+        completed.sort((a, b) -> {
+            LocalDateTime dateA = (LocalDateTime) a.get("completedAt");
+            LocalDateTime dateB = (LocalDateTime) b.get("completedAt");
+            if (dateA == null || dateB == null) return 0;
+            return dateB.compareTo(dateA);
+        });
 
         Map<String, Object> result = new HashMap<>();
         result.put("pending", pending);
@@ -462,5 +496,12 @@ public class WorkflowEngineService {
         tramite.setStatus("CANCELADO");
         tramite.setUpdatedAt(LocalDateTime.now());
         return tramiteRepository.save(tramite);
+    }
+
+    /**
+     * Elimina un trámite por ID.
+     */
+    public void deleteTramite(String tramiteId) {
+        tramiteRepository.deleteById(tramiteId);
     }
 }

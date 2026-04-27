@@ -67,6 +67,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
         );
+        // Volver a la lista de tareas
+        Navigator.pop(context);
       }
     } catch (e) {
       setState(() => _completing = false);
@@ -142,56 +144,92 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
 
             // Complete task form
             if (step != null && _tramite.status == 'EN_CURSO') ...[
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF43e97b).withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF43e97b).withOpacity(0.15)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+              Builder(
+                builder: (context) {
+                  final user = context.watch<AuthProvider>().user;
+                  final isMyDepartment = user?.departmentId == step.departmentId;
+                  final isAdmin = user?.role == 'ADMIN';
+                  
+                  // Solo mostrar si es mi departamento o soy Admin (opcional)
+                  if (!isMyDepartment && !isAdmin) {
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.white.withOpacity(0.1)),
+                      ),
+                      child: Column(
+                        children: [
+                          const Icon(Icons.hourglass_empty, color: Colors.white38, size: 32),
+                          const SizedBox(height: 12),
+                          const Text(
+                            'Esperando Acción',
+                            style: TextStyle(color: Colors.white70, fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            'Esta tarea (${step.nodeLabel}) debe ser completada por el departamento correspondiente.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white38, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF43e97b).withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: const Color(0xFF43e97b).withOpacity(0.15)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF43e97b).withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(Icons.edit_note, color: Color(0xFF43e97b), size: 20),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Tarea Pendiente',
-                                style: TextStyle(color: Color(0xFF43e97b), fontWeight: FontWeight.w600, fontSize: 14),
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF43e97b).withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              Text(
-                                step.nodeLabel,
-                                style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12),
+                              child: const Icon(Icons.edit_note, color: Color(0xFF43e97b), size: 20),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Tarea Pendiente',
+                                    style: TextStyle(color: Color(0xFF43e97b), fontWeight: FontWeight.w600, fontSize: 14),
+                                  ),
+                                  Text(
+                                    step.nodeLabel,
+                                    style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 20),
+                        if (_completing)
+                          const Center(child: CircularProgressIndicator(color: Color(0xFF43e97b)))
+                        else
+                          DynamicForm(
+                            fields: step.formFields ?? [],
+                            submitLabel: 'Completar Tarea',
+                            onSubmit: (formData) => _completeTask({'formData': formData}),
+                          ),
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    if (_completing)
-                      const Center(child: CircularProgressIndicator(color: Color(0xFF43e97b)))
-                    else
-                      DynamicForm(
-                        initialData: step.formData ?? {},
-                        submitLabel: 'Completar Tarea',
-                        onSubmit: _completeTask,
-                      ),
-                  ],
-                ),
+                  );
+                }
               ),
               const SizedBox(height: 24),
             ],

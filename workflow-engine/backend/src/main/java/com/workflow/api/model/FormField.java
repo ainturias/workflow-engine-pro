@@ -20,6 +20,8 @@ public class FormField {
     private String type;
 
     private boolean required;
+    private String placeholder;
+    private Integer width;
 
     /**
      * Solo para SELECT: lista de opciones disponibles

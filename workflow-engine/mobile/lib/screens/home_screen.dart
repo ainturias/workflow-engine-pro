@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-import 'funcionario/funcionario_home.dart';
+import 'funcionario/main_screen.dart';
+import 'admin/admin_main_screen.dart';
 import 'cliente/cliente_home.dart';
 import 'login_screen.dart';
 
@@ -19,9 +20,10 @@ class HomeScreen extends StatelessWidget {
 
         final user = auth.user!;
         switch (user.role) {
-          case 'FUNCIONARIO':
           case 'ADMIN':
-            return const FuncionarioHome();
+            return const AdminMainScreen();
+          case 'FUNCIONARIO':
+            return const MainScreen();
           case 'CLIENTE':
           default:
             return const ClienteHome();

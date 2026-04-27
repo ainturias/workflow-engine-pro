@@ -37,6 +37,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'designer/:policyId/form-builder/:nodeId',
+    loadComponent: () => import('./pages/form-builder/form-builder.component').then(m => m.FormBuilderComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'tramites',
     loadComponent: () => import('./pages/tramites/tramites.component').then(m => m.TramitesComponent),
     canActivate: [authGuard]

@@ -225,23 +225,26 @@ export class WorkflowDesignerComponent implements OnInit {
     this.connectingFrom = null;
   }
 
-  // ==================== GESTIÓN DE FORMULARIO ====================
-  addFormField(): void {
-    if (!this.selectedNode) return;
-    if (!this.selectedNode.formFields) {
-      this.selectedNode.formFields = [];
-    }
-    this.selectedNode.formFields.push({
-      name: 'campo_' + Date.now(),
-      label: 'Nuevo Campo',
-      type: 'TEXT',
-      required: false
-    });
-  }
-
-  removeFormField(index: number): void {
-    if (this.selectedNode && this.selectedNode.formFields) {
-      this.selectedNode.formFields.splice(index, 1);
+  // ==================== NAVEGACIÓN A FORM BUILDER ====================
+  goToFormBuilder(node: WorkflowNode): void {
+    if (!this.policyId) {
+      // Guardar la política primero si es nueva
+      this.policyService.create(this.policy).subscribe({
+        next: (created) => {
+          this.policyId = created.id!;
+          this.policy = created;
+          this.router.navigate(['/designer', this.policyId, 'form-builder', node.id]);
+        },
+        error: () => this.showMessage('Guarda la política primero', 'error')
+      });
+    } else {
+      // Guardar cambios actuales antes de navegar
+      this.policyService.update(this.policyId, this.policy).subscribe({
+        next: () => {
+          this.router.navigate(['/designer', this.policyId, 'form-builder', node.id]);
+        },
+        error: () => this.showMessage('Error al guardar antes de navegar', 'error')
+      });
     }
   }
 

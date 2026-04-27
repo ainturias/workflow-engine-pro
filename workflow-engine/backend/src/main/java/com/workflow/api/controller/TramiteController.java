@@ -123,4 +123,17 @@ public class TramiteController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
+    /**
+     * Eliminar un trámite por ID
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable String id) {
+        try {
+            engineService.deleteTramite(id);
+            return ResponseEntity.ok(Map.of("message", "Trámite eliminado"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
 }

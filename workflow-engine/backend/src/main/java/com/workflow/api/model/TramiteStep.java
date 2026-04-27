@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,4 +60,9 @@ public class TramiteStep {
 
     private LocalDateTime startedAt;
     private LocalDateTime completedAt;
+
+    /**
+     * Definición del formulario (esquema) para este paso
+     */
+    private List<FormField> formFields;
 }

@@ -1,0 +1,205 @@
+<div class="form-builder-container">
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="btn-back" (click)="goBack()">← Volver al Diseñador</button>
+      <div class="page-title">
+        <h2>📝 Diseñador de Formulario</h2>
+        <span class="node-name" *ngIf="node">{{ node.label }}</span>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-toggle-preview" (click)="showPreviewColumn = !showPreviewColumn" [class.active]="showPreviewColumn">
+        {{ showPreviewColumn ? '👁️ Ocultar Vista Previa' : '👁️ Mostrar Vista Previa' }}
+      </button>
+      <span class="field-count">{{ fields.length }} campo(s)</span>
+      <button class="btn-save" (click)="saveForm()" [disabled]="saving">
+        {{ saving ? '⏳ Guardando...' : '💾 Guardar Formulario' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- MENSAJE -->
+  <div class="alert" *ngIf="message" [class.alert-success]="messageType === 'success'" [class.alert-error]="messageType === 'error'">
+    {{ message }}
+  </div>
+
+  <div class="builder-layout">
+
+    <!-- ============ PANEL IZQUIERDO: Componentes + Propiedades ============ -->
+    <aside class="left-panel">
+      <!-- ACORDEÓN: COMPONENTES -->
+      <div class="accordion-section">
+        <div class="accordion-header" (click)="accordionComponents = !accordionComponents">
+          <span>🧩 Componentes</span>
+          <span class="accordion-arrow" [class.open]="accordionComponents">▸</span>
+        </div>
+        <div class="accordion-body" *ngIf="accordionComponents">
+          <p class="accordion-hint">Clic para agregar</p>
+          <div class="components-grid">
+            <div class="comp-item" *ngFor="let ft of fieldTypes" (click)="addField(ft.value)">
+              <div class="comp-icon" [ngClass]="ft.iconClass">{{ ft.icon }}</div>
+              <span class="comp-label">{{ ft.label }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACORDEÓN: PROPIEDADES -->
+      <div class="accordion-section">
+        <div class="accordion-header" (click)="accordionProperties = !accordionProperties">
+          <span>⚙️ Propiedades</span>
+          <span class="accordion-arrow" [class.open]="accordionProperties">▸</span>
+        </div>
+        <div class="accordion-body" *ngIf="accordionProperties">
+          <div class="no-selection" *ngIf="!selectedField">
+            <span class="no-sel-icon">👆</span>
+            <p>Selecciona un campo para editar</p>
+          </div>
+
+          <div class="props-content" *ngIf="selectedField">
+            <div class="prop-field-type">
+              <span class="prop-type-badge" [ngClass]="getFieldTypeInfo(selectedField.type)?.iconClass || ''">
+                {{ getFieldTypeInfo(selectedField.type)?.icon }}
+              </span>
+              <span>{{ getFieldTypeInfo(selectedField.type)?.label }}</span>
+            </div>
+            <div class="prop-row">
+              <label>Etiqueta</label>
+              <input type="text" [(ngModel)]="selectedField.label" />
+            </div>
+            <div class="prop-row">
+              <label>Ancho (Desktop)</label>
+              <select [(ngModel)]="selectedField.width">
+                <option *ngFor="let opt of widthOptions" [value]="opt.value">{{ opt.label }}</option>
+              </select>
+            </div>
+            <div class="prop-row" *ngIf="needsPlaceholder(selectedField.type)">
+              <label>Placeholder</label>
+              <input type="text" [(ngModel)]="selectedField.placeholder" />
+            </div>
+            <div class="prop-row prop-checkbox" *ngIf="isInputField(selectedField.type)">
+              <label class="toggle-label">
+                <input type="checkbox" [(ngModel)]="selectedField.required" />
+                <span>Obligatorio</span>
+              </label>
+            </div>
+            <div class="prop-row" *ngIf="needsOptions(selectedField.type)">
+              <label>Opciones (separar con coma)</label>
+              <input type="text" [(ngModel)]="selectedField.optionsText" (blur)="updateOptions(selectedField)" />
+            </div>
+            <div class="prop-actions">
+              <button class="btn-prop-action btn-dup" (click)="duplicateField(selectedFieldIndex)">📋 Copiar</button>
+              <button class="btn-prop-action btn-del" (click)="removeField(selectedFieldIndex)">🗑️ Quitar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============ CENTRO: Canvas del Formulario ============ -->
+    <main class="center-panel">
+      <div class="center-header">
+        <h3>Estructura del Formulario</h3>
+      </div>
+      <div class="empty-state" *ngIf="fields.length === 0">
+        <h4>Diseña tu formulario</h4>
+        <p>Agrega componentes desde el panel izquierdo</p>
+      </div>
+      <div class="fields-list flex-wrap">
+        <div class="field-row-container"
+             *ngFor="let field of fields; let i = index"
+             [style.width.%]="field.width || 100"
+             [class.selected]="selectedFieldIndex === i"
+             (click)="selectField(i)">
+          <div class="field-row">
+            <span class="field-row-icon" [ngClass]="getFieldTypeInfo(field.type)?.iconClass || ''">{{ getFieldTypeInfo(field.type)?.icon }}</span>
+            <div class="field-row-info">
+              <span class="field-row-label">{{ field.label }}</span>
+              <span class="field-row-type">{{ getFieldTypeInfo(field.type)?.label }} ({{ field.width }}%)</span>
+            </div>
+            <div class="field-row-actions">
+              <button class="btn-sm" (click)="moveField(i, i-1); $event.stopPropagation()" [disabled]="i === 0">▲</button>
+              <button class="btn-sm" (click)="moveField(i, i+1); $event.stopPropagation()" [disabled]="i === fields.length-1">▼</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ============ DERECHA: Vista Previa ============ -->
+    <aside class="right-panel" [class.collapsed]="!showPreviewColumn">
+      <div class="preview-header">
+        <h3>Vista Previa</h3>
+        <div class="preview-toggle">
+          <button [class.active]="previewMode === 'desktop'" (click)="previewMode = 'desktop'">🖥️</button>
+          <button [class.active]="previewMode === 'mobile'" (click)="previewMode = 'mobile'">📱</button>
+        </div>
+      </div>
+
+      <div class="preview-viewport" [class.mobile-view]="previewMode === 'mobile'">
+        <div class="preview-device" [class.phone-frame]="previewMode === 'mobile'">
+          <!-- Frame del Teléfono -->
+          <div class="phone-header" *ngIf="previewMode === 'mobile'">
+            <div class="phone-status-bar">
+              <span>9:41</span>
+              <div class="phone-notch"></div>
+              <div class="phone-icons">📶 🔋</div>
+            </div>
+          </div>
+
+          <div class="preview-form-content">
+            <h4 class="pf-form-title" *ngIf="node">{{ node.label }}</h4>
+            
+            <div class="preview-grid">
+              <div class="pf-field-wrapper" 
+                   *ngFor="let field of fields; let i = index"
+                   [style.width.%]="previewMode === 'mobile' ? 100 : (field.width || 100)"
+                   [class.active]="selectedFieldIndex === i"
+                   (click)="selectField(i)">
+
+                <!-- TÍTULOS Y SEPARADORES -->
+                <h3 *ngIf="field.type === 'TITLE'" class="pf-title">{{ field.label }}</h3>
+                <p *ngIf="field.type === 'LABEL'" class="pf-label">{{ field.label }}</p>
+                <hr *ngIf="field.type === 'DIVIDER'" class="pf-divider" />
+
+                <!-- CAMPOS DE ENTRADA (INPUTS) -->
+                <div class="pf-group" *ngIf="isInputField(field.type)">
+                  <label>{{ field.label }} <span class="pf-req" *ngIf="field.required">*</span></label>
+                  
+                  <input *ngIf="field.type === 'TEXT'" type="text" [placeholder]="field.placeholder || ''" disabled />
+                  <textarea *ngIf="field.type === 'TEXTAREA'" rows="3" [placeholder]="field.placeholder || ''" disabled></textarea>
+                  <input *ngIf="field.type === 'NUMBER'" type="number" [placeholder]="field.placeholder || '0'" disabled />
+                  <input *ngIf="field.type === 'EMAIL'" type="email" [placeholder]="field.placeholder || 'email@ejemplo.com'" disabled />
+                  <input *ngIf="field.type === 'DATE'" type="date" disabled />
+                  <input *ngIf="field.type === 'TIME'" type="time" disabled />
+                  
+                  <select *ngIf="field.type === 'SELECT'" disabled>
+                    <option>-- Seleccionar --</option>
+                    <option *ngFor="let opt of field.options">{{ opt }}</option>
+                  </select>
+
+                  <div *ngIf="field.type === 'CHECKBOX'" class="pf-check">
+                    <input type="checkbox" disabled /> <span>{{ field.label }}</span>
+                  </div>
+
+                  <div *ngIf="field.type === 'RADIO'" class="pf-radio-group">
+                    <div class="pf-radio-opt" *ngFor="let opt of field.options">
+                      <input type="radio" disabled /> <span>{{ opt }}</span>
+                    </div>
+                  </div>
+
+                  <div *ngIf="field.type === 'FILE' || field.type === 'IMAGE'" class="pf-upload-zone">
+                    {{ field.type === 'IMAGE' ? '🖼️ Imagen...' : '📎 Archivo...' }}
+                  </div>
+
+                  <div *ngIf="field.type === 'SIGNATURE'" class="pf-sig-zone">✍️ Firma</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

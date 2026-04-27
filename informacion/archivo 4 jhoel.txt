@@ -1,0 +1,17 @@
+no es en tiempo real el tablero deberia de ser en tiempo real
+las actividades que se crean en el panel de administrador no se reflejan en el tablero en un principio si deberia de
+mejorar las conexiones del tablero es decir que se vea mejor debido a que se superponen no se puede moldear a gusto
+texto o audio puedo dar la idea (conectar actividad a con actividad b) la herramienta no me va a generar el diagrama si no que se va a ir contruyendo mediante promps
+un  formulario que reciba la informacion del funcionario puede ser por voz o texto
+el encontrar cuellos de botella es con IA
+actores administrador-> el que crea las politicas de negocio , funcionarios -> que atienden las politicas de negocio
+sin hacer ningun click se debe de poder ver el progreso
+funcionario nunca va a ver el diagrama de actividades, lo menos que debera hacer es rellenar un formulario donde podra que hizo cargar imagenes firmar o validar
+el administrador va a crear politicas de negocio tendra que darle nombre a las politicas de negocio y luego diseñar el diagrama
+ej de banco politicas de negocio -> abrir una cuenta, tramitar un  credito, transferencias
+
+diagrama de actividades organizado en calles
+
+actividades, responsables, flujo 4 variaciones sec,alter,
+
+cargar departamentos, actividades, politicas de negocio

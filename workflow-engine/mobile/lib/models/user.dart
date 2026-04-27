@@ -51,6 +51,7 @@ class AuthResponse {
   final String firstName;
   final String lastName;
   final String role;
+  final String? departmentId;
 
   AuthResponse({
     required this.token,
@@ -59,6 +60,7 @@ class AuthResponse {
     required this.firstName,
     required this.lastName,
     required this.role,
+    this.departmentId,
   });
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
@@ -69,6 +71,7 @@ class AuthResponse {
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
       role: json['role'] ?? '',
+      departmentId: json['departmentId'],
     );
   }
 
@@ -79,6 +82,7 @@ class AuthResponse {
       firstName: firstName,
       lastName: lastName,
       role: role,
+      departmentId: departmentId,
     );
   }
 }

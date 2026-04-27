@@ -47,6 +47,16 @@ class TramiteService {
     throw Exception('Error al obtener tareas pendientes');
   }
 
+  /// Obtiene MIS tareas (pendientes + completadas) filtradas por mi departamento.
+  /// Usa el endpoint del backend que ya hace el filtro correcto.
+  static Future<Map<String, dynamic>> getMyTasks(String departmentId) async {
+    final response = await ApiClient.get('/tramites/tasks/user/$departmentId');
+    if (response.statusCode == 200) {
+      return Map<String, dynamic>.from(jsonDecode(response.body));
+    }
+    throw Exception('Error al obtener mis tareas');
+  }
+
   static Future<Tramite> completeTask({
     required String tramiteId,
     required String nodeId,

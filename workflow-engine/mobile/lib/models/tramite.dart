@@ -12,6 +12,7 @@ class TramiteStep {
   final String? assignedAt;
   final String? startedAt;
   final String? completedAt;
+  final List<dynamic>? formFields;
 
   TramiteStep({
     required this.id,
@@ -27,6 +28,7 @@ class TramiteStep {
     this.assignedAt,
     this.startedAt,
     this.completedAt,
+    this.formFields,
   });
 
   factory TramiteStep.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class TramiteStep {
       assignedAt: json['assignedAt']?.toString(),
       startedAt: json['startedAt']?.toString(),
       completedAt: json['completedAt']?.toString(),
+      formFields: json['formFields'],
     );
   }
 }
